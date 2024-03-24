@@ -1,0 +1,21 @@
+package {{ group_name }}.{{ app_name | lower }}.model;
+
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+import javax.persistence.*;
+import java.util.Set;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class {{ entity.name }} {
+
+    {% for property in entity.properties %}
+
+    @Column
+    private {{ property.type}} {{ property.name }};
+
+    {% endfor %}
+}
