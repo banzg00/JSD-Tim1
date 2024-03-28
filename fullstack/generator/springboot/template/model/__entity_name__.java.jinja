@@ -13,9 +13,8 @@ import java.util.Set;
 public class {{ entity.name }} {
 
     {% for property in entity.properties %}
-
     @Column
-    private {{ property.type}} {{ property.name }};
+    private {{ property.type | format_type}} {{ property.name }};
 
     {% endfor %}
 }

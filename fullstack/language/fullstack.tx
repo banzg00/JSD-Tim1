@@ -1,8 +1,18 @@
+
 EntityModel:
-    simple_types *= SimpleType
-    entities+=Entity
+    project_info = ProjectInfo
+    entities += Entity
+    dtos *= CustomDTO
 ;
 
+ProjectInfo:
+    'project' '{'
+        'name' ':' projectName=ID
+        ('group' ':' group=STRING)?
+        ('description' ':' description=STRING)?
+        ('java' ':' javaVersion=INT)?
+    '}'
+;
 
 Entity:
     'entity' name=ID '{'
@@ -11,13 +21,78 @@ Entity:
 ;
 
 Property:
-    name=ID ':' type=[Type]
+    Attribute | Relationship
+;
+
+Attribute:
+    name=ID ':' type=SimpleType
+;
+
+Relationship:
+    name=ID ':' type=[Entity] cardinality=Cardinality
+;
+
+
+CustomDTO:
+    CustomInputDTO | CustomResponseDTO
+;
+EntityDTO:
+    name=/[A-Z][a-z]+DTO/
+;
+
+
+CustomResponseDTO:
+    'DTO' name=ID '{'
+        mappings += ResponseDTOMapping
+    '}'
+;
+ResponseDTOMapping:
+    SimpleTypeMapping | EntityDTOMapping | CustomTypeMapping
+;
+
+
+CustomInputDTO:
+    'DTO' name=ID '(' origin=[Entity] ')' '{'
+        mappings += InputDTOMapping
+    '}'
+;
+InputDTOMapping:
+    InputDTOMapping_SimpleType |
+    InputDTOMapping_EntityDTO |
+    InputDTOMapping_CustomType
+;
+InputDTOMapping_SimpleType:
+   mapping=SimpleTypeMapping '=' attributeValue=[Attribute]
+;
+InputDTOMapping_EntityDTO:
+    mapping=EntityDTOMapping '=' attributeValue=[Relationship]
+;
+InputDTOMapping_CustomType:
+    mapping=CustomTypeMapping '=' attributeValue=[Relationship]
+;
+
+
+
+
+SimpleTypeMapping:
+    name=ID ':' type=SimpleType
+;
+EntityDTOMapping:
+    name=ID ':' type=EntityDTO
+;
+CustomTypeMapping:
+    name=ID ':' type=[CustomDTO]
+;
+
+
+Cardinality:
+    '@1..1' | '@1..*' | '@*..1' | '@*..*'
 ;
 
 SimpleType:
-  'type' name=ID
+    name=/int|str|float|bool|Long/
 ;
 
-Type:
-  SimpleType | Entity
+Comment:
+    /\/\/.*$/
 ;
