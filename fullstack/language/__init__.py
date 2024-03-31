@@ -18,7 +18,7 @@ def fullstack_language():
     fullstack_grammar_path = os.path.join(THIS_FOLDER, 'fullstack.tx')
 
     metamodel = metamodel_from_file(fullstack_grammar_path,
-                                    classes=[SimpleType],
+                                    classes=[SimpleType, BodyParam, ReturnValue],
                                     builtins=simple_types,
                                     debug=False)
 
