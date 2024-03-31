@@ -1,6 +1,6 @@
 project {
-    name: test
-    group: "uns.ac.rs"
+    name: testProject
+    group: uns.ac.rs
     description: "test project description"
     java: 21
 }

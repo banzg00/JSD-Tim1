@@ -9,7 +9,7 @@ EntityModel:
 ProjectInfo:
     'project' '{'
         'name' ':' projectName=ID
-        ('group' ':' group=STRING)?
+        ('group' ':' group=ID+['.'])?
         ('description' ':' description=STRING)?
         ('java' ':' javaVersion=INT)?
     '}'
