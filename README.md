@@ -166,13 +166,9 @@ Main difference between previous two commands is `--target` parameter, which can
 
 Example usage:
 
-<code>
-textx generate example/userExample.fs --target springboot -o example/example_output --overwrite
-</code>
+<code>textx generate example/userExample.fs --target springboot -o example/example_output --overwrite</code>
 <br>
-<code>
-textx generate example/userExample.fs --target angular -o example/example_output --overwrite
-</code>
+<code>textx generate example/userExample.fs --target angular -o example/example_output --overwrite</code>
 
 
 
