@@ -3,6 +3,7 @@ EntityModel:
     project_info = ProjectInfo
     entities += Entity
     dtos *= CustomDTO
+    apis *= API
 ;
 
 ProjectInfo:
@@ -47,7 +48,7 @@ CustomResponseDTO:
     '}'
 ;
 ResponseDTOMapping:
-    SimpleTypeMapping | EntityDTOMapping | CustomTypeMapping
+    SimpleTypeMapping | EntityDTOMapping | CustomDTOMapping
 ;
 
 
@@ -59,20 +60,19 @@ CustomInputDTO:
 InputDTOMapping:
     InputDTOMapping_SimpleType |
     InputDTOMapping_EntityDTO |
-    InputDTOMapping_CustomType
+    InputDTOMapping_CustomDTO
 ;
+
+
 InputDTOMapping_SimpleType:
    mapping=SimpleTypeMapping '=' attributeValue=[Attribute]
 ;
 InputDTOMapping_EntityDTO:
     mapping=EntityDTOMapping '=' attributeValue=[Relationship]
 ;
-InputDTOMapping_CustomType:
-    mapping=CustomTypeMapping '=' attributeValue=[Relationship]
+InputDTOMapping_CustomDTO:
+    mapping=CustomDTOMapping '=' attributeValue=[Relationship]
 ;
-
-
-
 
 SimpleTypeMapping:
     name=ID ':' type=SimpleType
@@ -80,10 +80,41 @@ SimpleTypeMapping:
 EntityDTOMapping:
     name=ID ':' type=EntityDTO
 ;
-CustomTypeMapping:
+CustomDTOMapping:
     name=ID ':' type=[CustomDTO]
 ;
 
+
+API:
+    'API' '/' apiPath=ID '{'
+        requests += Request
+    '}'
+;
+
+Request:
+    methodType=Method '/' methodPath=ID '{'
+        (pathParam=PathParam? bodyParam=BodyParam? returnValue=ReturnValue? )#
+    '}'
+;
+
+PathParam:
+    'pathParam' ':'  type=SimpleType name=ID
+;
+BodyParam:
+    'body' ':' type=AnyType
+;
+ReturnValue:
+    'return' ':' type=AnyType
+;
+
+AnyType:
+    sType=SimpleType | eType=EntityDTO | cType=[CustomDTO]
+;
+
+
+Method:
+    /GET|POST|PUT|DELETE|/
+;
 
 Cardinality:
     '@1..1' | '@1..*' | '@*..1' | '@*..*'

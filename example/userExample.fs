@@ -24,8 +24,29 @@ DTO CustomPersonDTO(Person) {
     nameIfo: str = name
 }
 
-DTO PersonResponse {
+DTO PersonResponseDTO {
     nameInfo: str
     addressInfo: AddressDTO
     customInfo: CustomPersonDTO
 }
+
+// custom API requests
+API /person {
+    GET /getCustomPerson {
+        pathParam: Long id
+        return: PersonResponseDTO
+        body: PersonDTO
+    }
+}
+
+
+API /myApi {
+    POST /myPostPath {
+        body: str
+        return: str
+    }
+    GET /myGetPath {
+        return: bool
+    }
+}
+
