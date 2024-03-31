@@ -2,7 +2,7 @@ project {
     name: testProject
     group: uns.ac.rs
     description: "test project description"
-    java: 21
+    java: 17
 }
 
 entity Person {
