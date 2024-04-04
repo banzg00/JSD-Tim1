@@ -4,7 +4,7 @@ from textx import generator
 from textxjinja import textx_jinja_generator
 
 from fullstack.generator.util.filters import format_type, format_cardinality
-from ..util.file_util import create_output_file, get_main_java_folder_path
+from ..util.file_util import create_output_file, get_main_java_folder_path, format_template_name
 from ..util.string_format_util import capitalize_str
 
 __version__ = "0.1.0.dev"
@@ -51,7 +51,8 @@ def generate_springboot_structure(context, filters, output_path, overwrite):
 
 def get_filters():
     return {'format_type': format_type,
-            'format_cardinality': format_cardinality
+            'format_cardinality': format_cardinality,
+            'format_template_name': format_template_name
             }
 
 
