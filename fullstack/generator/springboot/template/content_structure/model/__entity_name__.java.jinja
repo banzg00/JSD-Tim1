@@ -4,6 +4,9 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import jakarta.persistence.*;
 
 @Entity
@@ -17,8 +20,16 @@ public class {{ entity.name }} {
     private Long id;
 
     {% for property in entity.properties %}
-    @Column
+        {% if property.cardinality %}
+    {{ property.cardinality | format_cardinality}}(fetch = FetchType.LAZY)
+            {% if property.cardinality == '@*..*' or property.cardinality == '@1..*' %}
+    private List<{{ property.type | format_type}}> {{ property.name }};
+            {% else %}
     private {{ property.type | format_type}} {{ property.name }};
+            {% endif %}
+        {% else %}
+    private {{ property.type | format_type}} {{ property.name }};
+        {% endif %}
 
     {% endfor %}
 }

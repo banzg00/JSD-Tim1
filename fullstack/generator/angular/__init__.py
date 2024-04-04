@@ -1,5 +1,4 @@
 import os
-import re
 from textx import generator
 
 __version__ = "0.1.0.dev"
