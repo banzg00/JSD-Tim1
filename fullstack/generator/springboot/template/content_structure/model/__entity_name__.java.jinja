@@ -12,6 +12,10 @@ import jakarta.persistence.*;
 @AllArgsConstructor
 public class {{ entity.name }} {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     {% for property in entity.properties %}
     @Column
     private {{ property.type | format_type}} {{ property.name }};
