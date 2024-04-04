@@ -5,7 +5,9 @@ simple_type_java_mapper = {
     'str': 'String',
     'float': 'float',
     'bool': 'boolean',
-    'Long': 'Long'
+    'long': 'Long',
+    'date': 'LocalDate',
+    'dateTime': 'LocalDateTime',
 }
 
 simple_types = {key: SimpleType(None, value)

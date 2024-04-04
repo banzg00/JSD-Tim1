@@ -8,7 +8,8 @@ project {
 entity Person {
     name : str
     address: Address @1..1
-    age: int
+    age: dateTime
+    houses: House @1..*
 }
 
 entity Address {
@@ -16,6 +17,12 @@ entity Address {
     city : str
     country : str
     owner: Person @1..1
+}
+
+entity House {
+    floor: int
+    homeOwner: Person @*..1
+    createdAt: date
 }
 
 // custom DTOs and mappers
@@ -33,7 +40,7 @@ DTO PersonResponseDTO {
 // custom API requests
 API /person {
     GET /getCustomPerson {
-        pathParam: Long id
+        pathParam: long id
         return: PersonResponseDTO
         body: PersonDTO
     }

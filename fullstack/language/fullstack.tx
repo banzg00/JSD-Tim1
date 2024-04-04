@@ -121,7 +121,7 @@ Cardinality:
 ;
 
 SimpleType:
-    name=/int|str|float|bool|Long/
+    name=/int|str|float|bool|long|dateTime|date/
 ;
 
 Comment:
