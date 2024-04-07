@@ -65,23 +65,23 @@ InputDTOMapping:
 
 
 InputDTOMapping_SimpleType:
-   mapping=SimpleTypeMapping '=' attributeValue=[Attribute]
+   mapping=SimpleTypeMapping '=' originAttribute=[Attribute]
 ;
 InputDTOMapping_EntityDTO:
-    mapping=EntityDTOMapping '=' attributeValue=[Relationship]
+    mapping=EntityDTOMapping '=' originAttribute=[Relationship]
 ;
 InputDTOMapping_CustomDTO:
-    mapping=CustomDTOMapping '=' attributeValue=[Relationship]
+    mapping=CustomDTOMapping '=' originAttribute=[Relationship]
 ;
 
 SimpleTypeMapping:
-    name=ID ':' type=SimpleType
+    name=ID ':' type=SimpleType isList?='[]'
 ;
 EntityDTOMapping:
-    name=ID ':' type=EntityDTO
+    name=ID ':' type=EntityDTO isList?='[]'
 ;
 CustomDTOMapping:
-    name=ID ':' type=[CustomDTO]
+    name=ID ':' type=[CustomDTO] isList?='[]'
 ;
 
 

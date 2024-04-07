@@ -21,7 +21,18 @@ def fullstack_generate_springboot(metamodel, model, output_path, overwrite, debu
     # structure generator
     output_path = generate_springboot_structure(context, filters, output_path, overwrite)
     main_folder_path = generate_main_file(context, filters, output_path, overwrite)
+    generate_dto_files(context, filters, main_folder_path, model, overwrite)
     generate_entity_files(context, filters, main_folder_path, model, overwrite)
+
+
+def generate_dto_files(context, filters, main_folder_path, model, overwrite):
+    custom_dtos_template = os.path.join(THIS_FOLDER, 'template/custom_dtos')
+    for dto in model.dtos:
+        context['dto'] = dto
+        context['custom_dto_name'] = dto.name
+
+        # Run Jinja generator
+        textx_jinja_generator(custom_dtos_template, main_folder_path, context, overwrite, filters=filters)
 
 
 def generate_entity_files(context, filters, main_folder_path, model, overwrite):
@@ -64,7 +75,8 @@ def get_context(model):
                'app_name_lower': project_name.lower() if project_name else 'demo',
                'app_name_cap': capitalize_str(project_name) if project_name else 'Demo',
                'project_info': model.project_info,
-               'entities': model.entities
+               'entities': model.entities,
+               'dtos': model.dtos
                }
     return context
 
