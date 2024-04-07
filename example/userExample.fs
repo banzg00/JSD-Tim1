@@ -27,12 +27,12 @@ entity House {
 
 // custom DTOs and mappers
 DTO CustomPersonDTO(Person) {
-    addressInfo: AddressDTO = address
-    nameIfo: str = name
+    addressInfo: AddressDTO[] = address
+    nameInfo: str = name
 }
 
 DTO PersonResponseDTO {
-    nameInfo: str
+    nameInfo: str[]
     addressInfo: AddressDTO
     customInfo: CustomPersonDTO
 }

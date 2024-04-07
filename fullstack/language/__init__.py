@@ -11,6 +11,11 @@ __version__ = "0.1.0.dev"
 THIS_FOLDER = os.path.dirname(__file__)
 
 
+def get_custom_classes():
+    return [SimpleType, BodyParam, ReturnValue,
+            InputDTOMapping_CustomDTO, InputDTOMapping_SimpleType, InputDTOMapping_EntityDTO]
+
+
 @language('fullstack', '*.fs')
 def fullstack_language():
     """fullstack language"""
@@ -18,7 +23,7 @@ def fullstack_language():
     fullstack_grammar_path = os.path.join(THIS_FOLDER, 'fullstack.tx')
 
     metamodel = metamodel_from_file(fullstack_grammar_path,
-                                    classes=[SimpleType, BodyParam, ReturnValue],
+                                    classes=get_custom_classes(),
                                     builtins=simple_types,
                                     debug=False)
 

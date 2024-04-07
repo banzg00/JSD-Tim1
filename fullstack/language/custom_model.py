@@ -7,6 +7,44 @@ class SimpleType:
         return self.name
 
 
+class InputDTOMapping_SimpleType:
+    def __init__(self, parent, mapping, originAttribute):  # remember to include parent param.
+        self.parent = parent
+        self.name = mapping.name
+        self.type = mapping.type
+        self.isList = mapping.isList
+        self.origin_attribute = originAttribute
+
+    def __str__(self):
+        return self.name
+
+
+class InputDTOMapping_EntityDTO:
+    def __init__(self, parent, mapping, originAttribute):  # remember to include parent param.
+        self.parent = parent
+        self.name = mapping.name
+        self.type = mapping.type
+        self.isList = mapping.isList
+        self.origin_attribute = originAttribute
+
+    def __str__(self):
+        return self.name
+
+
+class InputDTOMapping_CustomDTO:
+    def __init__(self, parent, mapping, originAttribute):  # remember to include parent param.
+        self.parent = parent
+        self.name = mapping.name
+        self.type = mapping.type
+        self.isList = mapping.isList
+        self.origin_attribute = originAttribute
+
+    def __str__(self):
+        return self.name
+
+
+
+
 class BodyParam:
     def __init__(self, parent, type):  # remember to include parent param.
         self.parent = parent
