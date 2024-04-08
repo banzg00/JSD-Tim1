@@ -20,18 +20,20 @@ public class {{ entity.name }} {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    {% for property in entity.properties %}
-        {% if property.cardinality %}
+{% for property in entity.properties %}
+    {% if property.cardinality %}
     {{ property.cardinality | format_cardinality}}(fetch = FetchType.LAZY)
-            {% if property.cardinality == '@*..*' or property.cardinality == '@1..*' %}
+        {% if property.cardinality == '@*..*' or property.cardinality == '@1..*' %}
     private List<{{ property.type | format_type}}> {{ property.name }};
-            {% else %}
-    private {{ property.type | format_type}} {{ property.name }};
-            {% endif %}
         {% else %}
     private {{ property.type | format_type}} {{ property.name }};
         {% endif %}
-
-    {% endfor %}
+    {% else %}
+        {% if property.isList %}
+     private List<{{ property.type | format_type}}> {{ property.name }};
+        {% else %}
+    private {{ property.type | format_type}} {{ property.name }};
+        {% endif %}
+    {% endif %}
+{% endfor %}
 }

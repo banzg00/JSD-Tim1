@@ -26,7 +26,7 @@ Property:
 ;
 
 Attribute:
-    name=ID ':' type=SimpleType
+    name=ID ':' type=SimpleType isList?='[]'
 ;
 
 Relationship:

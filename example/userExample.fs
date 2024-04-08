@@ -6,7 +6,7 @@ project {
 }
 
 entity Person {
-    name : str
+    name : str[]
     address: Address @1..1
     age: dateTime
     houses: House @1..*
