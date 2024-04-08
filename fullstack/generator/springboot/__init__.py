@@ -63,7 +63,8 @@ def generate_springboot_structure(context, filters, output_path, overwrite):
 def get_filters():
     return {'format_type': format_type,
             'format_cardinality': format_cardinality,
-            'format_template_name': format_template_name
+            'format_template_name': format_template_name,
+            'capitalize_str': capitalize_str
             }
 
 
