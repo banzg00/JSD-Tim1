@@ -49,31 +49,31 @@ class BodyParam:
     def __init__(self, parent, type):  # remember to include parent param.
         self.parent = parent
         if type.sType:
-            self.type = type.sType.name
+            self.type = type.sType
             self.typeOfType = type.sType.__class__.__name__
         elif type.eType:
-            self.type = type.eType.name
+            self.type = type.eType
             self.typeOfType = type.eType.__class__.__name__
         elif type.cType:
-            self.type = type.cType.name
+            self.type = type.cType
             self.typeOfType = type.cType.__class__.__name__
 
     def __str__(self):
-        return self.type
+        return self.type.name
 
 
 class ReturnValue:
     def __init__(self, parent, type):  # remember to include parent param.
         self.parent = parent
         if type.sType:
-            self.type = type.sType.name
+            self.type = type.sType
             self.typeOfType = type.sType.__class__.__name__
         elif type.eType:
-            self.type = type.eType.name
+            self.type = type.eType
             self.typeOfType = type.eType.__class__.__name__
         elif type.cType:
-            self.type = type.cType.name
+            self.type = type.cType
             self.typeOfType = type.cType.__class__.__name__
 
     def __str__(self):
-        return self.type
+        return self.type.name
