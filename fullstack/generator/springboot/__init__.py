@@ -22,6 +22,7 @@ def fullstack_generate_springboot(metamodel, model, output_path, overwrite, debu
     output_path = generate_springboot_structure(context, filters, output_path, overwrite)
     main_folder_path = generate_main_file(context, filters, output_path, overwrite)
     generate_exception_files(context, filters,main_folder_path, overwrite)
+    generate_config_files(context, filters, main_folder_path, overwrite)
     generate_dto_files(context, filters, main_folder_path, model, overwrite)
     generate_entity_files(context, filters, main_folder_path, model, overwrite)
     generate_api_files(context, filters, main_folder_path, model, overwrite)
@@ -57,6 +58,12 @@ def generate_entity_files(context, filters, main_folder_path, model, overwrite):
 
         # Run Jinja generator
         textx_jinja_generator(content_structure_template, main_folder_path, context, overwrite, filters=filters)
+
+
+def generate_config_files(context, filters, main_folder_path, overwrite):
+    exception_template = os.path.join(THIS_FOLDER, 'template/config_files')
+    # Run Jinja generator
+    textx_jinja_generator(exception_template, main_folder_path, context, overwrite, filters=filters)
 
 
 def generate_exception_files(context, filters, main_folder_path, overwrite):
