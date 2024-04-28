@@ -43,7 +43,7 @@ def get_class_name(param):
 
 
 def check_param_type_entity_dto(param, path, definition, all_entity_dtos):
-    if param.type not in all_entity_dtos:
+    if param.type.name not in all_entity_dtos:
         raise TextXSemanticError("Invalid type {} of {} inside {} definition".format(param.type, definition, path))
 
 
