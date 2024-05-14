@@ -1,24 +1,35 @@
-<form (ngSubmit)="onSubmit()">
-  <div>
-    <label for="username">Username:</label>
-    <input
-      type="text"
-      id="username"
-      name="username"
-      [(ngModel)]="username"
-      required
-    />
-  </div>
-  <div>
-    <label for="password">Password:</label>
-    <input
-      type="password"
-      id="password"
-      name="password"
-      [(ngModel)]="password"
-      required
-    />
-  </div>
-  <button type="submit">Login</button>
-  <button routerLink="/signup">Sign Up</button>
-</form>
+<div class="flex w-full h-full justify-center bg-gray-200">
+  <form
+    (ngSubmit)="onSubmit()"
+    class="mt-[10%] p-10 gap-y-8 h-fit w-[25vw] flex-col flex items-left rounded-xl bg-gray-300"
+  >
+    <div class="mx-auto font-semibold text-3xl">Login</div>
+    <div class="flex items-center justify-between">
+      <label for="username">Username:</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        class="w-[15vw]"
+        [(ngModel)]="username"
+        required
+      />
+    </div>
+    <div class="flex items-center justify-between">
+      <label for="password">Password:</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        class="w-[15vw]"
+        [(ngModel)]="password"
+        required
+      />
+    </div>
+    <button type="submit" class="w-full">Login</button>
+
+    <a routerLink="/signup" class="underline text-sm mx-auto w-fit"
+      >Don't have an account? Signup here</a
+    >
+  </form>
+</div>
