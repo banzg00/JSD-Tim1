@@ -1,0 +1,129 @@
+
+EntityModel:
+    project_info = ProjectInfo
+    entities += Entity
+    dtos *= CustomDTO
+    apis *= API
+;
+
+ProjectInfo:
+    'project' '{'
+        'name' ':' projectName=ID
+        ('group' ':' group=ID+['.'])?
+        ('description' ':' description=STRING)?
+        ('java' ':' javaVersion=INT)?
+    '}'
+;
+
+Entity:
+    'entity' name=ID '{'
+        properties+=Property
+    '}'
+;
+
+Property:
+    Attribute | Relationship
+;
+
+Attribute:
+    name=ID ':' type=SimpleType isList?='[]'
+;
+
+Relationship:
+    name=ID ':' type=[Entity] cardinality=Cardinality
+;
+
+
+CustomDTO:
+    CustomInputDTO | CustomResponseDTO
+;
+EntityDTO:
+    name=/[A-Z][a-z]+DTO/
+;
+
+
+CustomResponseDTO:
+    'DTO' name=ID '{'
+        mappings += ResponseDTOMapping
+    '}'
+;
+ResponseDTOMapping:
+    SimpleTypeMapping | EntityDTOMapping | CustomDTOMapping
+;
+
+
+CustomInputDTO:
+    'DTO' name=ID '(' origin=[Entity] ')' '{'
+        mappings += InputDTOMapping
+    '}'
+;
+InputDTOMapping:
+    InputDTOMapping_SimpleType |
+    InputDTOMapping_EntityDTO |
+    InputDTOMapping_CustomDTO
+;
+
+
+InputDTOMapping_SimpleType:
+   mapping=SimpleTypeMapping '=' originAttribute=[Attribute]
+;
+InputDTOMapping_EntityDTO:
+    mapping=EntityDTOMapping '=' originAttribute=[Relationship]
+;
+InputDTOMapping_CustomDTO:
+    mapping=CustomDTOMapping '=' originAttribute=[Relationship]
+;
+
+SimpleTypeMapping:
+    name=ID ':' type=SimpleType isList?='[]'
+;
+EntityDTOMapping:
+    name=ID ':' type=EntityDTO isList?='[]'
+;
+CustomDTOMapping:
+    name=ID ':' type=[CustomDTO] isList?='[]'
+;
+
+
+API:
+    'API' '/' apiPath=ID '{'
+        requests += Request
+    '}'
+;
+
+Request:
+    methodType=Method '/' methodPath=ID '{'
+        (pathParam=PathParam? bodyParam=BodyParam? returnValue=ReturnValue? )#
+    '}'
+;
+
+PathParam:
+    'pathParam' ':'  type=SimpleType name=ID
+;
+BodyParam:
+    'body' ':' type=AnyType
+;
+ReturnValue:
+    'return' ':' type=AnyType
+;
+
+AnyType:
+    sType=SimpleType | eType=EntityDTO | cType=[CustomDTO]
+;
+
+
+Method:
+    /GET|POST|PUT|DELETE|/
+;
+
+Cardinality:
+    '@1..1' | '@1..*' | '@*..1' | '@*..*'
+;
+
+SimpleType:
+    name=/int|str|float|bool|long|dateTime|date/
+;
+
+Comment:
+    /\/\/.*$/
+;

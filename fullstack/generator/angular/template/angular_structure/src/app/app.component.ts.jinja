@@ -1,0 +1,17 @@
+import { Component } from '@angular/core';
+import { AuthService } from './pages/auth/auth.service';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
+})
+export class AppComponent {
+  title = '{{app_name_dash}}';
+    isLoading: boolean = true;
+    isLogged: boolean = false;
+
+    constructor(private authService: AuthService){
+      this.isLogged = this.authService.getToken() != '' ? true: false;
+    }
+}
