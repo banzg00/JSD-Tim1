@@ -1,1 +1,5 @@
-{{entity.name}} component works!
+<div >{{ entity.name }}</div>
+
+{% for prop in entity.properties %}
+{{ prop.name}}
+{% endfor %}
