@@ -1,4 +1,3 @@
-import { MatDialogModule } from '@angular/material/dialog';
 import {
   DateAdapter,
   // MAT_DATE_FORMATS,
@@ -7,8 +6,9 @@ import {
 } from '@angular/material/core';
 import { ToastrModule } from 'ngx-toastr';
 // import { MY_DATE_FORMAT } from 'src/utils/dateUtil';
-import { ClipboardModule } from '@angular/cdk/clipboard';
 
+import { MatDialogModule } from '@angular/material/dialog';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -28,6 +28,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+
+import { LoginComponent } from './pages/auth/login/login.component';
+import { SignupComponent } from './pages/auth/signup/signup.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -36,9 +39,10 @@ import { AppComponent } from './app.component';
   declarations: [
     AppComponent,
     // NavbarComponent,
-    // LoginPageComponent,
     // HomePageComponent,
     // SidebarComponent,
+    LoginComponent,
+    SignupComponent,
     PageNotFoundComponent,
   ],
   exports: [],
@@ -78,4 +82,4 @@ import { AppComponent } from './app.component';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
