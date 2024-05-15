@@ -1,1 +1,33 @@
-{{entity.name}} component works!
+<div class="flex w-full h-full justify-center bg-gray-200">
+  <div
+    class="relative mt-[10%] p-10 gap-y-8 h-fit w-[35vw] flex-col flex items-left rounded-xl bg-gray-300"
+  >
+    <div class="absolute top-4 flex w-full items-center justify-between">
+      <a class="underline" href="/">< Back</a>
+      <div class="flex gap-x-2 mr-14">
+        <button class="w-[5vw]">Edit</button>
+        <button class="w-[5vw]">Delete</button>
+      </div>
+    </div>
+
+    <div class="mx-auto font-semibold text-3xl mt-4">{{ entity.name }}</div>
+    {% for prop in entity.properties %}
+        <div class="flex items-center gap-x-4 border-b border-gray-400">
+            <div class="w-[5vw]">{{prop.name | capitalize_str}}: </div>
+            {% if not prop.cardinality %}
+            <div>{{'{{ obj?.' + prop.name + ' ?? \'N/A\' }}' }}</div>
+            {% else %}
+                {% if prop.cardinality == '@*..*' or prop.cardinality == '@1..*' %}
+                <div *ngFor="let house of {{'obj?.' + prop.name + ' ?? []' }}">
+                    <a [routerLink]="'/{{ prop.type | format_type | lower}}/' + {{ 'house?.id' }}">{{ '{{ house?.id }}' }}</a>
+                </div>
+                {% else %}
+                <div>
+                    <a [routerLink]="'/{{ prop.type | format_type | lower}}/' + {{' obj?.' + prop.name + '?.id' }}">{{'{{ obj?.' + prop.name + '?.id ?? \'N/A\' }}' }}</a>
+                </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    {% endfor %}
+    </div>
+</div>
