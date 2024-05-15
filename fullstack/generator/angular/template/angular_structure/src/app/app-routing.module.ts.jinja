@@ -5,7 +5,10 @@ import { LoginComponent } from "./pages/auth/login/login.component";
 import { SignupComponent } from "./pages/auth/signup/signup.component";
 import { PageNotFoundComponent } from "./pages/page-not-found/page-not-found.component";
 {% for entity in entities%}
-import { {{entity.name}}Component } from './pages/{{entity.name | lower}}-page/{{entity.name | lower}}-page.component';
+import { {{entity.name}}Component } from './pages/{{entity.name | lower}}/{{entity.name | lower}}-page/{{entity.name | lower}}-page.component';
+{% endfor %}
+{% for entity in entities%}
+import { {{entity.name}}ListComponent } from './pages/{{entity.name | lower}}/{{entity.name | lower}}-list-page/{{entity.name | lower}}-list-page.component';
 {% endfor %}
 
 const routes: Routes = [
@@ -14,6 +17,9 @@ const routes: Routes = [
   { path: "signup", component: SignupComponent },
   {% for entity in entities%}
   { path: "{{entity.name | lower}}/:id", component: {{entity.name}}Component },
+  {% endfor %}
+  {% for entity in entities%}
+  { path: "list/{{entity.name | lower}}", component: {{entity.name}}ListComponent },
   {% endfor %}
   { path: "not-found", component: PageNotFoundComponent, canMatch: [] },
   { path: "**", component: PageNotFoundComponent, canMatch: [] },

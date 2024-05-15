@@ -36,14 +36,21 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 
 {% for entity in entities%}
-import { {{entity.name}}Component } from './pages/{{entity.name | lower}}-page/{{entity.name | lower}}-page.component';
+import { {{entity.name}}Component } from './pages/{{entity.name | lower}}/{{entity.name | lower}}-page/{{entity.name | lower}}-page.component';
 {% endfor %}
+{% for entity in entities%}
+import { {{entity.name}}ListComponent } from './pages/{{entity.name | lower}}/{{entity.name | lower}}-list-page/{{entity.name | lower}}-list-page.component';
+{% endfor %}
+
 
 @NgModule({
   declarations: [
     AppComponent,
     {% for entity in entities%}
     {{entity.name}}Component,
+    {% endfor %}
+    {% for entity in entities%}
+    {{entity.name}}ListComponent,
     {% endfor %}
     LoginComponent,
     SignupComponent,
