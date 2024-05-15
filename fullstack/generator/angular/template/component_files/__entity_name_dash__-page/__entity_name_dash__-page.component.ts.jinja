@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { {{entity.name}}Service } from './{{entity.name|lower}}.service'; 
 import { ActivatedRoute } from '@angular/router';
+import { {{entity.name}} } from '../../types/types';
 
 @Component({
   selector: 'app-{{entity_name_dash}}-page',
@@ -9,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class {{entity.name}}Component {
   id: string = '';
-  obj: any = null;
+  obj: {{entity.name}} | null = null;
 
   constructor(private route: ActivatedRoute, private {{entity.name|lower}}Service: {{entity.name}}Service) { }
 
