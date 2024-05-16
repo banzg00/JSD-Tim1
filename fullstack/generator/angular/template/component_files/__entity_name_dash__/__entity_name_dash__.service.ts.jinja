@@ -10,4 +10,8 @@ export class {{entity.name}}Service {
   get{{entity.name}}ById(id: string) {
     return this.http.get(`/api/{{entity.name|lower}}/${id}`);
   }
+
+  delete{{entity.name}}(id: string) {
+    return this.http.delete(`/api/{{entity.name | lower}}/${id}`);
+  }
 }
