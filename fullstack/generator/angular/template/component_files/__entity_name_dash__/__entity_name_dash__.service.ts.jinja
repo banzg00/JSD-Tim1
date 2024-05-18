@@ -1,17 +1,36 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { {{ entity.name }} } from '../../types/types';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class {{entity.name}}Service {
+  private routePrefix = `${environment.API_BASE_URL}/{{entity.name | lower}}`;
+  private httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
+
   constructor(private http: HttpClient) { }
 
+  getAll{{entity.name}}() {
+    return this.http.get<{{entity.name}}[]>(`${this.routePrefix}/all`);
+  }
+
   get{{entity.name}}ById(id: string) {
-    return this.http.get(`/api/{{entity.name|lower}}/${id}`);
+    return this.http.get<{{entity.name}}>(`${this.routePrefix}/${id}`);
+  }
+
+  create{{entity.name}}({{entity.name | lower}}: {{entity.name}}) {
+    return this.http.post<{{entity.name}}>(`${this.routePrefix}`, {{entity.name | lower}}, this.httpOptions);
+  }
+
+  update{{entity.name}}({{entity.name | lower}}: {{entity.name}}) {
+    return this.http.put<{{entity.name}}>(`${this.routePrefix}/{{ "${" +entity.name | lower + ".id}" }}`, {{entity.name | lower}}, this.httpOptions);
   }
 
   delete{{entity.name}}(id: string) {
-    return this.http.delete(`/api/{{entity.name | lower}}/${id}`);
+    return this.http.delete<void>(`${this.routePrefix}/${id}`);
   }
 }
