@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { {{entity.name}}Service } from '../{{entity.name|lower}}.service'; 
 import { ActivatedRoute } from '@angular/router';
 import { {{entity.name}} } from '../../../types/types';
@@ -10,10 +10,13 @@ import { {{entity.name}} } from '../../../types/types';
 })
 export class {{entity.name}}ListComponent {
 
-  objects: {{entity.name}}[] = [];
+  {{entity.name | lower}}List: {{entity.name}}[] = [];
 
   constructor(private route: ActivatedRoute, private {{entity.name|lower}}Service: {{entity.name}}Service) { }
 
   ngOnInit(): void {
+    this.{{entity.name|lower}}Service.getAll{{entity.name}}().subscribe({{entity.name | lower}}List => {
+      this.{{entity.name | lower}}List = {{entity.name | lower}}List;
+    });
   }
 }

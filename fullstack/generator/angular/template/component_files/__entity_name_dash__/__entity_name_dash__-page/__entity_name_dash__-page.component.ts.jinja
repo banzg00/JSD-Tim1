@@ -13,7 +13,7 @@ import { {{entity.name}} } from '../../../types/types';
 })
 export class {{entity.name}}Component {
   id: string = '';
-  obj: {{entity.name}} | null = null;
+  {{entity.name | lower }}: {{entity.name}} | null = null;
 
   constructor(
     private dialog: MatDialog,
@@ -25,8 +25,8 @@ export class {{entity.name}}Component {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.id = params.get('id') ?? '';
-      this.{{entity.name|lower}}Service.get{{entity.name}}ById(this.id).subscribe((obj:any) => {
-        this.obj = obj;
+      this.{{entity.name|lower}}Service.get{{entity.name}}ById(this.id).subscribe(({{entity.name | lower }}:any) => {
+        this.{{entity.name | lower }} = {{entity.name | lower }};
       });
     });
   }

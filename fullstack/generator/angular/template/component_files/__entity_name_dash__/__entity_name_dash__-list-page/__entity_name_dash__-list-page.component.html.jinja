@@ -1,1 +1,42 @@
-LIST WORKS
+<div class="flex w-full h-full justify-center bg-gray-200">
+  <div
+    class="relative mt-[10%] p-10 gap-y-8 h-fit w-[35vw] flex-col flex items-left rounded-xl bg-gray-300"
+  >
+    <div class="absolute top-4 flex w-full items-center justify-between">
+      <a class="underline" href="/">< Back</a>
+    </div>
+    <div class="mx-auto font-semibold text-3xl mt-4">{{ entity.name }}</div>
+    <table class="bg-gray-200 rounded-xl">
+    <thead>
+        <tr>
+        {% for prop in entity.properties %}
+            <th class="text-left pl-2">{{ prop.name | capitalize_str }}</th>
+        {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let {{ entity.name | lower }} of {{entity.name | lower}}List" class="border-b border-b-gray-300">
+        {% for prop in entity.properties %}
+            <td class="text-left pl-2 pt-2">
+            {% if not prop.cardinality %}
+                {{'{{' + entity.name | lower + '.' + prop.name + ' }}' }}
+            {% else %}
+                {% if prop.cardinality == '@*..*' or prop.cardinality == '@1..*' %}
+                <div class="flex gap-x-2">
+                <a 
+                class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+                [routerLink]="'/{{ prop.type | format_type | lower}}/' + {{ 'listItem.id' }}" *ngFor="let listItem of {{ entity.name | lower + '.' + prop.name }}">{{ '{{ listItem?.id }}' }}</a>
+                </div>
+                {% else %}
+                <a 
+                class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+                [routerLink]="'/{{ prop.type | format_type | lower}}/' + {{entity.name | lower + '.' + prop.name + '.id' }}">{{'{{ '+ entity.name | lower + '.' + prop.name + '.id }}' }}</a>
+                {% endif %}
+            {% endif %}
+            </td>
+        {% endfor %}
+        </tr>
+    </tbody>
+    </table>
+  </div>
+</div>
