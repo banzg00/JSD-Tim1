@@ -15,15 +15,15 @@
         <div class="flex items-center gap-x-4 border-b border-gray-400">
             <div class="w-[5vw]">{{prop.name | capitalize_str}}: </div>
             {% if not prop.cardinality %}
-            <div>{{'{{ obj?.' + prop.name + ' ?? \'N/A\' }}' }}</div>
+            <div>{{'{{ ' + entity.name | lower + '?.' + prop.name + ' ?? \'N/A\' }}' }}</div>
             {% else %}
                 {% if prop.cardinality == '@*..*' or prop.cardinality == '@1..*' %}
-                <div *ngFor="let house of {{'obj?.' + prop.name + ' ?? []' }}">
-                    <a [routerLink]="'/{{ prop.type | format_type | lower}}/' + {{ 'house?.id' }}">{{ '{{ house?.id }}' }}</a>
+                <div *ngFor="let listItem of {{entity.name | lower + '?.' + prop.name + ' ?? []' }}">
+                    <a [routerLink]="'/{{ prop.type | format_type | lower}}/' + {{ 'listItem?.id' }}">{{ '{{ listItem?.id }}' }}</a>
                 </div>
                 {% else %}
                 <div>
-                    <a [routerLink]="'/{{ prop.type | format_type | lower}}/' + {{' obj?.' + prop.name + '?.id' }}">{{'{{ obj?.' + prop.name + '?.id ?? \'N/A\' }}' }}</a>
+                    <a [routerLink]="'/{{ prop.type | format_type | lower}}/' + {{entity.name | lower + '?.' + prop.name + '?.id' }}">{{'{{ '+ entity.name | lower + '?.' + prop.name + '?.id ?? \'N/A\' }}' }}</a>
                 </div>
                 {% endif %}
             {% endif %}

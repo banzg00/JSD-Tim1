@@ -8,7 +8,7 @@ project {
 entity Person {
     name : str[]
     address: Address @1..1
-    age: dateTime
+    age: int
     houses: House @1..*
 }
 
