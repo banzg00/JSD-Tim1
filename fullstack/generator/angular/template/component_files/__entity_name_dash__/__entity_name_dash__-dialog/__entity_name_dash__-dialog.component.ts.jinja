@@ -1,0 +1,65 @@
+import { Component, OnInit, Inject } from '@angular/core';
+import { {{entity.name}}Service } from '../{{entity.name|lower}}.service'; 
+import { ActivatedRoute } from '@angular/router';
+import { {{entity.name}} } from '../../../types/types';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+{% for prop in entity.properties %}
+{% if prop.cardinality %}
+import { {{ prop.type | format_type }} } from '../../../types/types';
+import { {{ prop.type | format_type }}Service } from '../../{{ prop.type | format_type | lower }}/{{ prop.type | format_type | lower }}.service';
+{% endif %}
+{% endfor %}
+
+
+@Component({
+  selector: 'app-{{entity_name_dash}}-dialog',
+  templateUrl: './{{entity_name_dash}}-dialog.component.html',
+  styleUrls: ['./{{entity_name_dash}}-dialog.component.scss'],
+})
+export class {{entity.name}}DialogComponent {
+
+    {% for prop in entity.properties %}
+    {% if prop.cardinality %}
+    {{ prop.name | lower}}: {{ prop.type | format_type }}[] = [];
+    {% endif %}
+    {% endfor %}
+
+  constructor(
+    public dialogRef: MatDialogRef<{{entity.name}}DialogComponent>, 
+    @Inject(MAT_DIALOG_DATA) public data: { id: number },
+    private route: ActivatedRoute, 
+    private {{entity.name|lower}}Service: {{entity.name}}Service,
+    {% for prop in entity.properties %}
+    {% if prop.cardinality %}
+    private {{ prop.type | format_type | lower}}Service: {{ prop.type | format_type }}Service,
+    {% endif %}
+    {% endfor %}) { }
+
+  ngOnInit(): void {
+
+    {% for prop in entity.properties %}
+    {% if prop.cardinality %}
+    this.{{ prop.type | format_type | lower}}Service.getAll{{ prop.type | format_type }}().subscribe( {{ prop.name | lower}} => this.{{ prop.name | lower }} = {{ prop.name | lower}});
+    {% endif %}
+    {% endfor %}
+
+
+    if (this.data?.id) {
+      this.fetch{{ entity.name }}(this.data.id)
+    }
+  }
+
+  fetch{{ entity.name }}(id: number): void {
+      this.{{entity.name|lower}}Service.get{{entity.name}}ById(id.toString()).subscribe(({{entity.name | lower }}:any) => {
+        console.log({{entity.name | lower }})
+    });
+  }
+
+  onCancelClick(): void {
+    this.dialogRef.close(false);
+  }
+
+  onConfirmClick(): void {
+    this.dialogRef.close(true);
+  }
+}

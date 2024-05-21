@@ -38,9 +38,8 @@ import { AppComponent } from "./app.component";
 
 {% for entity in entities%}
 import { {{entity.name}}Component } from './pages/{{entity.name | lower}}/{{entity.name | lower}}-page/{{entity.name | lower}}-page.component';
-{% endfor %}
-{% for entity in entities%}
 import { {{entity.name}}ListComponent } from './pages/{{entity.name | lower}}/{{entity.name | lower}}-list-page/{{entity.name | lower}}-list-page.component';
+import { {{entity.name}}DialogComponent } from './pages/{{entity.name | lower}}/{{entity.name | lower}}-dialog/{{entity.name | lower}}-dialog.component';
 {% endfor %}
 
 
@@ -49,9 +48,8 @@ import { {{entity.name}}ListComponent } from './pages/{{entity.name | lower}}/{{
     AppComponent,
     {% for entity in entities%}
     {{entity.name}}Component,
-    {% endfor %}
-    {% for entity in entities%}
     {{entity.name}}ListComponent,
+    {{entity.name}}DialogComponent,
     {% endfor %}
     LoginComponent,
     SignupComponent,
