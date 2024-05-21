@@ -1,28 +1,45 @@
-<form (ngSubmit)="onSubmit()">
-  <div>
-    <label for="fullName">Full Name:</label>
-    <input
-      type="text"
-      id="fullName"
-      name="fullName"
-      [(ngModel)]="fullName"
-      required
-    />
-  </div>
-  <div>
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" [(ngModel)]="email" required />
-  </div>
-  <div>
-    <label for="password">Password:</label>
-    <input
-      type="password"
-      id="password"
-      name="password"
-      [(ngModel)]="password"
-      required
-    />
-  </div>
-  <button type="submit">Sign Up</button>
-  <button routerLink="/login">Login</button>
-</form>
+<div class="flex w-full h-full justify-center bg-gray-200">
+  <form
+    (ngSubmit)="onSubmit()"
+    class="mt-[10%] p-10 gap-y-8 h-fit w-[25vw] flex-col flex items-left rounded-xl bg-gray-300"
+  >
+    <div class="mx-auto font-semibold text-3xl">Signup</div>
+    <div class="flex items-center justify-between">
+      <label for="fullName">Full Name:</label>
+      <input
+        type="text"
+        id="fullName"
+        name="fullName"
+        class="w-[15vw]"
+        [(ngModel)]="fullName"
+        required
+      />
+    </div>
+    <div class="flex items-center justify-between">
+      <label for="email">Email:</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        class="w-[15vw]"
+        [(ngModel)]="email"
+        required
+      />
+    </div>
+    <div class="flex items-center justify-between">
+      <label for="password">Password:</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        class="w-[15vw]"
+        [(ngModel)]="password"
+        required
+      />
+    </div>
+    <button type="submit" class="w-full">Sign Up</button>
+    <a routerLink="/login" class="underline text-sm mx-auto w-fit"
+      >Already a member? Login here</a
+    >
+  </form>
+</div>

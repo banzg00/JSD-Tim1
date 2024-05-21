@@ -5,9 +5,9 @@ __version__ = "0.1.0.dev"
 
 from textxjinja import textx_jinja_generator
 
-from fullstack.generator.util.filters import format_type
+from fullstack.generator.util.filters import format_type_typescript
 from fullstack.generator.util.file_util import create_output_file, get_pages_angular_folder_path
-from fullstack.generator.util.string_format_util import dash_case, capitalize_str
+from fullstack.generator.util.string_format_util import dash_case, capitalize_str, lower_first_str
 
 THIS_FOLDER = os.path.dirname(__file__)
 
@@ -60,4 +60,7 @@ def get_context(model):
 
 
 def get_filters():
-    return {'format_type': format_type}
+    return {'format_type': format_type_typescript,
+            'capitalize_str': capitalize_str,
+            'lower_first_str': lower_first_str
+            }

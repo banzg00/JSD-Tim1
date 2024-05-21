@@ -44,3 +44,29 @@ $light-gray-text: #B4B4BB;
 $radio-button-color: #d4c0c9;
 
 $font: 'Yu Gothic UI';
+
+button {
+    padding: 6px 10px 6px 10px;
+    border-width: 1px;
+    border-color: orange;
+    border-radius: 20px;
+    color: white;
+    background-color: rgb(207, 129, 26);
+}
+
+button:hover {
+    padding: 6px 11px 6px 11px;
+}
+
+input {
+    border-radius: 20px;
+    border-width: 1px;
+    padding: 6px 10px 6px 10px;
+    border-color: rgb(207, 129, 26);
+}
+
+input:focus-within,
+input:focus, 
+input:focus-visible {
+    outline-color: orange;
+}

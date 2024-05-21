@@ -1,0 +1,49 @@
+import { Component } from '@angular/core';
+import { {{entity.name}}Service } from '../{{entity.name|lower}}.service'; 
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from '../../../components/confirmation-dialog/confirmation-dialog.component';
+
+import { {{entity.name}} } from '../../../types/types';
+
+@Component({
+  selector: 'app-{{entity_name_dash}}-page',
+  templateUrl: './{{entity_name_dash}}-page.component.html',
+  styleUrls: ['./{{entity_name_dash}}-page.component.scss'],
+})
+export class {{entity.name}}Component {
+  id: string = '';
+  {{entity.name | lower }}: {{entity.name}} | null = null;
+
+  constructor(
+    private dialog: MatDialog,
+    private route: ActivatedRoute, 
+    private {{entity.name|lower}}Service: {{entity.name}}Service,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      this.id = params.get('id') ?? '';
+      this.{{entity.name|lower}}Service.get{{entity.name}}ById(this.id).subscribe(({{entity.name | lower }}:any) => {
+        this.{{entity.name | lower }} = {{entity.name | lower }};
+      });
+    });
+  }
+
+  openDeleteConfirmationDialog(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.deleteEntity();
+      }
+    });
+  }
+
+  deleteEntity(): void {     
+    this.{{entity.name|lower}}Service.delete{{entity.name}}(this.id).subscribe(() => {
+      this.router.navigate(['/list/{{entity.name | lower}}']);
+    });
+  }
+}
