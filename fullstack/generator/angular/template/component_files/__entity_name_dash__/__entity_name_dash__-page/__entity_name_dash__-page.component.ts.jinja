@@ -3,7 +3,7 @@ import { {{entity.name}}Service } from '../{{entity.name|lower}}.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../../../components/confirmation-dialog/confirmation-dialog.component';
-
+import { {{entity.name}}DialogComponent } from '../{{ entity.name | lower }}-dialog/{{ entity.name | lower }}-dialog.component';
 import { {{entity.name}} } from '../../../types/types';
 
 @Component({
@@ -38,6 +38,12 @@ export class {{entity.name}}Component {
       if (result) {
         this.deleteEntity();
       }
+    });
+  }
+
+  openEditDialog(): void {
+    const dialogRef = this.dialog.open({{entity.name}}DialogComponent, {
+      data: { id: this.id }
     });
   }
 
