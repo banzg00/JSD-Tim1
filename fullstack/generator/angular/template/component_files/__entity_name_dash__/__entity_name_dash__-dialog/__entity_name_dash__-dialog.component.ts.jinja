@@ -3,6 +3,7 @@ import { {{entity.name}}Service } from '../{{entity.name|lower}}.service';
 import { ActivatedRoute } from '@angular/router';
 import { {{entity.name}} } from '../../../types/types';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 {% for prop in entity.properties %}
 {% if prop.cardinality %}
 import { {{ prop.type | format_type }} } from '../../../types/types';
@@ -17,10 +18,10 @@ import { {{ prop.type | format_type }}Service } from '../../{{ prop.type | forma
   styleUrls: ['./{{entity_name_dash}}-dialog.component.scss'],
 })
 export class {{entity.name}}DialogComponent {
-
+    {{ entity.name | lower }}Form!: FormGroup;
     {% for prop in entity.properties %}
     {% if prop.cardinality %}
-    {{ prop.name | lower}}: {{ prop.type | format_type }}[] = [];
+    {{ prop.name }}Options: {{ prop.type | format_type }}[] = [];
     {% endif %}
     {% endfor %}
 
@@ -33,13 +34,29 @@ export class {{entity.name}}DialogComponent {
     {% if prop.cardinality %}
     private {{ prop.type | format_type | lower}}Service: {{ prop.type | format_type }}Service,
     {% endif %}
-    {% endfor %}) { }
+    {% endfor %}
+    private fb: FormBuilder) { }
 
   ngOnInit(): void {
 
+    this.{{ entity.name | lower }}Form = this.fb.group({
+      id: [null],
+      {%for prop in entity.properties %}
+      {% if prop.cardinality %}
+      {% if prop.cardinality == '@*..*' or prop.cardinality == '@1..*' %}
+      {{ prop.name }}Ids: [[]],
+      {% else %}
+      {{ prop.name }}Id: [''],
+      {% endif %}
+      {% else %}
+      {{ prop.name }}: [''],
+      {% endif %}
+      {% endfor %}
+    });
+
     {% for prop in entity.properties %}
     {% if prop.cardinality %}
-    this.{{ prop.type | format_type | lower}}Service.getAll{{ prop.type | format_type }}().subscribe( {{ prop.name | lower}} => this.{{ prop.name | lower }} = {{ prop.name | lower}});
+    this.{{ prop.type | format_type | lower}}Service.getAll{{ prop.type | format_type }}().subscribe( {{ prop.name }} => this.{{ prop.name }}Options = {{ prop.name }});
     {% endif %}
     {% endfor %}
 
@@ -50,16 +67,41 @@ export class {{entity.name}}DialogComponent {
   }
 
   fetch{{ entity.name }}(id: number): void {
-      this.{{entity.name|lower}}Service.get{{entity.name}}ById(id.toString()).subscribe(({{entity.name | lower }}:any) => {
-        console.log({{entity.name | lower }})
+      this.{{entity.name|lower}}Service.get{{entity.name}}ById(id.toString()).subscribe(({{entity.name | lower }}: {{ entity.name }}) => {
+        this.{{ entity.name | lower }}Form.patchValue({
+          id: {{entity.name | lower }}.id,
+          {%for prop in entity.properties %}
+          {% if prop.cardinality %}
+          {% if prop.cardinality == '@*..*' or prop.cardinality == '@1..*' %}
+          {{ prop.name }}Ids: {{entity.name | lower }}.{{ prop.name }}.map((item: {{ prop.type | format_type }}) => item.id),
+          {% else %}
+          {{ prop.name }}Id: {{entity.name | lower }}.{{ prop.name  }}.id,
+          {% endif %}
+          {% else %}
+          {{ prop.name }}: {{entity.name | lower }}.{{ prop.name }},
+          {% endif %}
+          {% endfor %}
+      });
     });
   }
 
-  onCancelClick(): void {
+  onCancel(): void {
     this.dialogRef.close(false);
   }
 
-  onConfirmClick(): void {
-    this.dialogRef.close(true);
+  onSubmit(): void {
+    if (this.{{ entity.name | lower }}Form.valid) {
+      const formData = this.{{ entity.name | lower }}Form.value;
+
+      if (formData.id) {
+        this.{{entity.name|lower}}Service.update{{entity.name}}(formData).subscribe((updated{{entity.name}}) => {
+          this.dialogRef.close(updated{{entity.name}});
+        });
+      } else {
+        this.{{entity.name|lower}}Service.create{{entity.name}}(formData).subscribe((new{{entity.name}}) => {
+          this.dialogRef.close(new{{entity.name}});
+        });
+      }
+    }
   }
 }

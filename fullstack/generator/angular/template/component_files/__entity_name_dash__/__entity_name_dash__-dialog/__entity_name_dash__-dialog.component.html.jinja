@@ -1,10 +1,34 @@
-<div class="flex flex-col gap-y-4 px-10 py-4 rounded-xl">
-  <h2 mat-dialog-title>Are you sure you want to delete this?</h2>
-  <div mat-dialog-content>
-    CONTENT {{ entity.name }}
-  </div>
-  <mat-dialog-actions align="center" class="flex gap-x-4 items-center">
-    <button class="w-[8vw]" (click)="onCancelClick()">Cancel</button>
-    <button class="w-[8vw]" (click)="onConfirmClick()">Submit</button>
-  </mat-dialog-actions>
+<h1 mat-dialog-title class="mx-auto">{{ '{{ data.id ? \'Update\' : \'Create\' }} ' + entity.name }}</h1>
+<div mat-dialog-content class="w-[35vw]">
+  <form [formGroup]="{{ entity.name |  lower }}Form" class="w-full flex flex-col gap-y-1 items-center">
+    {%for prop in entity.properties %}
+      <mat-form-field appearance="fill" class="w-full">
+      <mat-label>{{ prop.name | capitalize_str }}</mat-label>
+    {% if prop.cardinality%}
+    {% if prop.cardinality == '@*..*' or prop.cardinality == '@1..*' %}
+      <mat-select formControlName="{{ prop.name }}Ids" required multiple>
+        <mat-option *ngFor="let {{ prop.name }} of {{ prop.name }}Options" [value]="{{ prop.name }}.id" class="w-full">
+          {{ prop.type | format_type + " {{ "+ prop.name +"?.id }}"}}
+        </mat-option>
+      </mat-select>
+    {% else %}
+      <mat-select formControlName="{{ prop.name }}Id" required>
+        <mat-option *ngFor="let {{ prop.name }} of {{ prop.name }}Options" [value]="{{ prop.name }}.id" class="w-full">
+          {{ prop.type | format_type + " {{ "+ prop.name +"?.id }}"}}
+        </mat-option>
+      </mat-select>
+    {% endif %}
+    {% else %}
+      <input matInput formControlName="{{ prop.name }}" required class="w-full">
+    {% endif %}
+    </mat-form-field>
+    {% endfor %}
+
+  </form>
+</div>
+<div mat-dialog-actions class="flex w-full !justify-center !gap-x-4">
+  <button mat-button class="w-[10vw]" (click)="onCancel()">Cancel</button>
+  <button mat-button class="w-[10vw]" (click)="onSubmit()" [disabled]="{{ entity.name |  lower }}Form.invalid">
+    {{ '{{ data.id ? \'Update\' : \'Create\' }}' }}
+  </button>
 </div>
