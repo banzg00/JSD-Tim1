@@ -1,0 +1,25 @@
+{
+  "name": "fullstack",
+  "displayName": "fs",
+  "description": "Vs Code extension for fullstack DSL",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.88.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "fullstack",
+      "aliases": ["fullstack", "fullstack"],
+      "extensions": [".fs"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "fullstack",
+      "scopeName": "source.fs",
+      "path": "./syntaxes/fullstack.tmLanguage.json"
+    }]
+  }
+}
