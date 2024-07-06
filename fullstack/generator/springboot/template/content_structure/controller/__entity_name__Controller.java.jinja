@@ -13,7 +13,7 @@ import java.util.List;
     {% if api.apiPath | lower == entity.name | lower %}
     	{% for endpoint in api.requests %}
             {% if endpoint.returnValue.typeOfType != 'SimpleType' %}
-import {{ group_path }}.dto.{{endpoint.returnValue.type |format_type}};
+import {{ group_path }}.dto.{{endpoint.returnValue.type | format_type}};
             {% endif %}
             {% if endpoint.bodyParam and endpoint.bodyParam.typeOfType != 'SimpleType' %}
 import {{ group_path }}.dto.{{endpoint.bodyParam.type | format_type}};
