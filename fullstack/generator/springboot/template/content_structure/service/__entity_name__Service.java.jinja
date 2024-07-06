@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
+import java.util.ArrayList;
+
 
 import {{ group_path }}.exception.NotFoundException;
 import {{ group_path }}.dto.{{ entity.name }}DetailsDTO;
@@ -265,4 +267,10 @@ public class {{ entity.name }}Service {
         {% endfor %}
     {% endif %}
 {% endfor %}
+
+{% if entity.name | lower == 'user' %}
+    public User getUserByEmail(String email) throws NotFoundException {
+        return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("User not found."));
+    }
+{% endif %}
 }
