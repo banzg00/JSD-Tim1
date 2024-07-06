@@ -52,17 +52,17 @@ public class {{ entity.name }}Controller {
         return {{ service }}.getDetailsById(id);
     }
 
-    @PostMapping()
+    @PostMapping(path="/create")
     public {{ entity.name }}DetailsDTO create(@RequestBody {{ entity.name }}DetailsDTO dto) {
         return {{ service }}.create(dto);
     }
 
-    @PutMapping()
+    @PutMapping(path="/update/{id}")
     public {{ entity.name }}DetailsDTO update(@RequestBody {{ entity.name }}DetailsDTO dto) {
         return {{ service }}.update(dto);
     }
 
-    @DeleteMapping(path = "/{id}")
+    @DeleteMapping(path = "/delete/{id}")
     public void delete(@PathVariable Long id) {
         {{ service }}.deleteById(id);
     }
