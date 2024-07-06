@@ -23,14 +23,14 @@ export class {{entity.name}}Service {
   }
 
   create{{entity.name}}({{entity.name | lower}}: {{entity.name}}) {
-    return this.http.post<{{entity.name}}>(`${this.routePrefix}`, {{entity.name | lower}}, this.httpOptions);
+    return this.http.post<{{entity.name}}>(`${this.routePrefix}/create`, {{entity.name | lower}}, this.httpOptions);
   }
 
   update{{entity.name}}({{entity.name | lower}}: {{entity.name}}) {
-    return this.http.put<{{entity.name}}>(`${this.routePrefix}/{{ "${" +entity.name | lower + ".id}" }}`, {{entity.name | lower}}, this.httpOptions);
+    return this.http.put<{{entity.name}}>(`${this.routePrefix}/update/{{ "${" +entity.name | lower + ".id}" }}`, {{entity.name | lower}}, this.httpOptions);
   }
 
   delete{{entity.name}}(id: string) {
-    return this.http.delete<void>(`${this.routePrefix}/${id}`);
+    return this.http.delete<void>(`${this.routePrefix}/delete/${id}`);
   }
 }
