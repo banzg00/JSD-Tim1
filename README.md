@@ -21,6 +21,7 @@ Model must be written using described grammar rules.
   - Controller + CRUD operations
   - DTO
   - Mappers - from entity to DTO
+- *If you define a User entity with email, password and fullName, you will get login and register as well
 
 ### Angular Features
 - Standardized project layout
@@ -32,6 +33,7 @@ Model must be written using described grammar rules.
     - Delete option
   - Service 
     - CRUD operations
+- *If you define a User entity with email, password and fullName, you will get login and register as well
   
   
 ## Grammar

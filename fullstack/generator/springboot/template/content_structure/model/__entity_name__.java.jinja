@@ -5,6 +5,7 @@ package {{ group_name }}.{{ app_name | lower }}.model;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Builder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import jakarta.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class {{ entity.name }} {
 
     @Id

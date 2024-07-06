@@ -7,16 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import {{ group_path }}.dto.request.LoginRequest;
 import {{ group_path }}.dto.request.RegistrationRequest;
-import {{ group_path }}.response.TokenResponse;
-import uns.ac.rs.uks.dto.response.UserDTO;
-import uns.ac.rs.uks.exception.NotFoundException;
-import uns.ac.rs.uks.mapper.UserMapper;
+import {{ group_path }}.dto.response.TokenResponse;
 import {{ group_path }}.service.AuthService;
 
 @CrossOrigin
@@ -32,7 +28,7 @@ public class AuthController {
         try {
             TokenResponse token = authService.login(loginRequest);
             return ResponseEntity.ok(token);
-        } catch (NotFoundException | InternalAuthenticationServiceException | BadCredentialsException e) {
+        } catch (NotFoundException | BadCredentialsException e) {
             return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.UNAUTHORIZED);
         } catch (Exception e){
             e.printStackTrace();
@@ -41,8 +37,16 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public UserDTO register(@Valid @RequestBody RegistrationRequest registrationRequest) {
-        return authService.register(registrationRequest);
+    public ResponseEntity<?> register(@Valid @RequestBody RegistrationRequest registrationRequest) {
+        try {
+            authService.register(registrationRequest);
+            return ResponseEntity.ok().build();
+        } catch (AlreadyExistsException e) {
+            return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
 }
