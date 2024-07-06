@@ -1,3 +1,4 @@
+{% set group_path = group_name + '.' + app_name | lower %}
 package {{ group_path }}.dto.request;
 
 import jakarta.validation.constraints.Email;
