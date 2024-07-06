@@ -1,0 +1,14 @@
+{% if 'user' not in entity_names %}
+CREATE TABLE IF NOT EXISTS USERS (
+    full_name VARCHAR(100),
+    email VARCHAR(100),
+    password VARCHAR(100)
+);
+{% endif %}
+
+INSERT INTO USERS(full_name, email, password) VALUES
+-- password: pera123
+('Pera Peric', 'pera@gmail.com', '$2a$12$uIjkE3hHR5xMJFKEFcBqw.LpKXKIK7HWs6nYXC/foShQvNq673bH2');
+
+
+

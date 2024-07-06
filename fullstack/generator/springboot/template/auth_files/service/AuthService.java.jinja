@@ -3,6 +3,10 @@
 package {{ group_path }}.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,15 +15,10 @@ import {{ group_path }}.dto.request.RegistrationRequest;
 import {{ group_path }}.dto.response.TokenResponse;
 import {{ group_path }}.exception.AlreadyExistsException;
 import {{ group_path }}.exception.NotFoundException;
-{% set user_entity_found = false %}
-{% for e in entities %}
-    {% if e.name == User %}
-        {% set user_entity_found = true %}
+{% if 'user' in entity_names %}
 import {{ group_path }}.model.User;
-    {% endif %}
-{% endfor %}
+{% endif %}
 import {{ group_path }}.config.TokenProvider;
-import {{ group_path }}.service.UserService;
 
 import java.util.Base64;
 import java.util.Random;
@@ -28,8 +27,7 @@ import java.lang.UnsupportedOperationException;
 
 @Service
 public class AuthService {
-
-    {% if user_entity_found %}
+    {% if 'user' in entity_names %}
     @Autowired
     private TokenProvider tokenProvider;
 
@@ -38,6 +36,9 @@ public class AuthService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     public void register(RegistrationRequest registrationRequest) throws AlreadyExistsException {
         try {
@@ -50,16 +51,15 @@ public class AuthService {
                         .password(passwordEncoder.encode(registrationRequest.getPassword()))
                         .build();
             userService.save(user);
-        }            
+        }
     }
 
     public TokenResponse login(LoginRequest loginRequest) throws NotFoundException, BadCredentialsException {
         User user = userService.getUserByEmail(loginRequest.getEmail());
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new BadCredentialsException();
+            throw new BadCredentialsException("Bad credentials!");
         }
-
-        String accessToken = tokenProvider.generateToken(authentication);
+        String accessToken = tokenProvider.generateToken(loginRequest.getEmail());
         Long expiresAt = tokenProvider.getExpirationDateFromToken(accessToken).getTime();
         return new TokenResponse(accessToken, expiresAt);
     }

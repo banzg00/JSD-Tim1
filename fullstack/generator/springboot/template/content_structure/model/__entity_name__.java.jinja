@@ -17,6 +17,9 @@ import jakarta.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+{% if entity.name | lower == 'user' %}
+@Table(name = "USERS")
+{% endif %}
 public class {{ entity.name }} {
 
     @Id

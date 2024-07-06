@@ -14,13 +14,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-{% set user_entity_found = false %}
-{% for e in entities %}
-    {% if e.name == User %}
-        {% set user_entity_found = true %}
+import {{ group_path }}.exception.InvalidAccessTokenException;
+
+{% if 'user' in entity_names %}
 import {{ group_path }}.model.User;
-    {% endif %}
-{% endfor %}
+{% endif %}
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -46,14 +44,14 @@ public class TokenProvider {
     @Value("${app.auth.tokenSecret}")
     private String tokenSecret;
 
-    {% if user_entity_found %}
-    public String generateToken(User user) {
+    {% if 'user' in entity_names %}
+    public String generateToken(String email) {
         Instant now = Instant.now();
         Instant expiresAt = now.plusSeconds(tokenExpirationSeconds);
 
         return Jwts.builder()
                 .setIssuer(appName)
-                .setSubject(user.getEmail())
+                .setSubject(email)
                 .setAudience("web")
                 .setIssuedAt(Date.from(now))
                 .setExpiration(Date.from(expiresAt))
@@ -78,7 +76,7 @@ public class TokenProvider {
         try {
             return readClaims(token).getSubject();
         } catch (ExpiredJwtException ex) {
-            throw new ExpiredJwtException("Token expired!");
+            throw new InvalidAccessTokenException("Token expired!");
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -89,7 +87,7 @@ public class TokenProvider {
         try {
             return readClaims(token).getExpiration();
         } catch (ExpiredJwtException ex) {
-            throw new ExpiredJwtException("Token expired!");
+            throw new InvalidAccessTokenException("Token expired!");
         } catch (Exception e) {
             e.printStackTrace();
             return null;

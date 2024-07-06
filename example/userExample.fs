@@ -5,6 +5,15 @@ project {
     java: 17
 }
 
+entity User {
+    customUsername: str
+    email: str
+    password: str
+    firstName: str
+    lastName: str
+    fullName: str
+}
+
 entity Person {
     name : str[]
     address: Address @1..1
