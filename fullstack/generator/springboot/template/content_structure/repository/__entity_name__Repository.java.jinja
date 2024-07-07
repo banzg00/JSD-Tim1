@@ -6,6 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import {{ group_name }}.{{ app_name | lower }}.model.{{ entity.name }};
 
+{% if entity.name | lower == 'user' %}
+import java.util.Optional;
+{% endif %}
+
 @Repository
 public interface {{ entity.name }}Repository extends JpaRepository<{{ entity.name }}, Long> {
+
+{% if entity.name | lower == 'user' %}
+    Optional<User> findByEmail(String email);
+{% endif %}
 }

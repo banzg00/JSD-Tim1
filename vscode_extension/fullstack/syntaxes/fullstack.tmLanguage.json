@@ -1,0 +1,60 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "fullstack",
+	"patterns": [
+		{ "include": "#strings" },
+        { "include": "#comments" },
+        { "include": "#cardinality" },
+		{ "include": "#simple-type" },
+		{ "include": "#method-type"},
+		{ "include": "#entity-def" }
+    ],
+	"repository": {
+		"strings": {
+			"name": "string.quoted.double.fullstack",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.fullstack",
+					"match": "(?!\\\\)."
+				}
+			]
+		},
+		"comments": {
+            "begin": "//",
+            "end": "$",
+            "name": "comment.line.double-slash.fullstack"
+        },
+		"cardinality": {
+			"patterns": [{
+				"name": "constant.language.fullstack",
+				"match": "@(1|\\*)\\.\\.(1|\\*)"
+			}]
+		},
+		"simple-type":{
+            "name": "storage.type.fullstack",
+            "match": "\\b(int|str|float|bool|long|dateTime|date)\\b"
+        },
+		"method-type":{
+            "name": "storage.type.fullstack",
+            "match": "\\b(GET|POST|PUT|DELETE)\\b"
+        },
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.control.fullstack",
+				"match": "\\b(project|entity|DTO|API)\\b"
+			}]
+		},
+		"entity-def": {
+			"patterns": [
+				{"include": "#keywords"},
+				{
+					"name": "entity.name.class.fullstack",
+					"match": "\\b[A-Z][A-Za-z]*\\b"
+				}
+			]
+		}
+	},
+	"scopeName": "source.fs"
+}

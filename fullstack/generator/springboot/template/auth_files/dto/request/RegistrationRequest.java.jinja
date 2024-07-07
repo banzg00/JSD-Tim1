@@ -1,0 +1,23 @@
+{% set group_path = group_name + '.' + app_name | lower %}
+package {{ group_path }}.dto.request;
+
+import jakarta.validation.constraints.*;
+import lombok.Data;
+
+@Data
+public class RegistrationRequest {
+
+    @Email
+    @NotBlank
+    @NotEmpty
+    @NotNull
+    private String email;
+
+    @NotBlank
+    @Size(min = 8, message = "Password must be longer than 8 characters.")
+    private String password;
+
+    @NotBlank
+    private String fullName;
+
+}

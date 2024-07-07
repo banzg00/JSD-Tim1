@@ -7,13 +7,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import {{ group_path }}.service.{{ entity.name }}Service;
 import {{ group_path }}.dto.{{ entity.name }}DTO;
-import {{ group_path }}.dto.{{ entity.name }}DetailsDTO;
 import java.util.List;
 {% for api in apis %}
     {% if api.apiPath | lower == entity.name | lower %}
     	{% for endpoint in api.requests %}
             {% if endpoint.returnValue.typeOfType != 'SimpleType' %}
-import {{ group_path }}.dto.{{endpoint.returnValue.type |format_type}};
+import {{ group_path }}.dto.{{endpoint.returnValue.type | format_type}};
             {% endif %}
             {% if endpoint.bodyParam and endpoint.bodyParam.typeOfType != 'SimpleType' %}
 import {{ group_path }}.dto.{{endpoint.bodyParam.type | format_type}};
@@ -47,22 +46,17 @@ public class {{ entity.name }}Controller {
         return {{ service }}.getById(id);
     }
 
-    @GetMapping(path="/details/{id}")
-    public {{ entity.name }}DetailsDTO getDetailsById(@PathVariable Long id) {
-        return {{ service }}.getDetailsById(id);
-    }
-
-    @PostMapping()
-    public {{ entity.name }}DetailsDTO create(@RequestBody {{ entity.name }}DetailsDTO dto) {
+    @PostMapping(path="/create")
+    public {{ entity.name }}DTO create(@RequestBody {{ entity.name }}DTO dto) {
         return {{ service }}.create(dto);
     }
 
-    @PutMapping()
-    public {{ entity.name }}DetailsDTO update(@RequestBody {{ entity.name }}DetailsDTO dto) {
+    @PutMapping(path="/update/{id}")
+    public {{ entity.name }}DTO update(@RequestBody {{ entity.name }}DTO dto) {
         return {{ service }}.update(dto);
     }
 
-    @DeleteMapping(path = "/{id}")
+    @DeleteMapping(path = "/delete/{id}")
     public void delete(@PathVariable Long id) {
         {{ service }}.deleteById(id);
     }

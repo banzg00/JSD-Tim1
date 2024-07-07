@@ -12,9 +12,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
+import java.util.ArrayList;
+
 
 import {{ group_path }}.exception.NotFoundException;
-import {{ group_path }}.dto.{{ entity.name }}DetailsDTO;
 import {{ group_path }}.dto.{{ entity.name }}DTO;
 import {{ group_path }}.model.{{ entity.name }};
 import {{ group_path }}.mapper.{{ entity.name }}Mapper;
@@ -56,9 +57,6 @@ public class {{ entity.name }}Service {
     public {{ entity.name }}DTO getById(Long labelId) {
         return {{ entity.name }}Mapper.toDTO(findById(labelId));
     }
-    public {{ entity.name }}DetailsDTO getDetailsById(Long labelId) {
-        return {{ entity.name }}Mapper.toDetailsDTO(findById(labelId));
-    }
 
     public List<{{ entity.name }}DTO> getAll() {
         List<{{ entity.name }}> all = {{ repo_name }}.findAll();
@@ -96,7 +94,7 @@ public class {{ entity.name }}Service {
         }
     }
 
-    public {{ entity.name }}DetailsDTO update({{ entity.name }}DetailsDTO dto){
+    public {{ entity.name }}DTO update({{ entity.name }}DTO dto){
         {{ entity.name }} {{ e_var_name }} = findById(dto.getId());
 {% for property in entity.properties %}
     {% set p_name_cap = (property.name | capitalize_str) %}
@@ -162,11 +160,11 @@ public class {{ entity.name }}Service {
     {% endif %}
 {% endfor %}
 
-        return {{ entity.name }}Mapper.toDetailsDTO(save({{ e_var_name }}));
+        return {{ entity.name }}Mapper.toDTO(save({{ e_var_name }}));
     }
 
 
-    public {{ entity.name }}DetailsDTO create({{ entity.name }}DetailsDTO dto){
+    public {{ entity.name }}DTO create({{ entity.name }}DTO dto){
         {{entity.name}} {{e_var_name}} = new {{entity.name}}();
 
 {% for property in entity.properties %}
@@ -239,7 +237,7 @@ public class {{ entity.name }}Service {
         {% endif %}
     {% endif %}
 {% endfor %}
-        return {{ entity.name }}Mapper.toDetailsDTO({{e_var_name }});
+        return {{ entity.name }}Mapper.toDTO({{e_var_name }});
     }
 
 
@@ -265,4 +263,10 @@ public class {{ entity.name }}Service {
         {% endfor %}
     {% endif %}
 {% endfor %}
+
+{% if entity.name | lower == 'user' %}
+    public User getUserByEmail(String email) throws NotFoundException {
+        return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("User not found."));
+    }
+{% endif %}
 }

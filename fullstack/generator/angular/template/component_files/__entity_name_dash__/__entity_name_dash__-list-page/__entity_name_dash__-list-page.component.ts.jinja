@@ -3,6 +3,10 @@ import { {{entity.name}}Service } from '../{{entity.name|lower}}.service';
 import { ActivatedRoute } from '@angular/router';
 import { {{entity.name}} } from '../../../types/types';
 
+import { MatDialog } from '@angular/material/dialog';
+import { {{entity.name}}DialogComponent } from '../{{ entity.name | lower }}-dialog/{{ entity.name | lower }}-dialog.component';
+
+
 @Component({
   selector: 'app-{{entity_name_dash}}-list-page',
   templateUrl: './{{entity_name_dash}}-list-page.component.html',
@@ -12,11 +16,17 @@ export class {{entity.name}}ListComponent {
 
   {{entity.name | lower}}List: {{entity.name}}[] = [];
 
-  constructor(private route: ActivatedRoute, private {{entity.name|lower}}Service: {{entity.name}}Service) { }
+  constructor(private dialog: MatDialog, private route: ActivatedRoute, private {{entity.name|lower}}Service: {{entity.name}}Service) { }
+
 
   ngOnInit(): void {
     this.{{entity.name|lower}}Service.getAll{{entity.name}}().subscribe({{entity.name | lower}}List => {
       this.{{entity.name | lower}}List = {{entity.name | lower}}List;
     });
   }
+
+  addNew() {
+    const dialogRef = this.dialog.open({{entity.name}}DialogComponent);
+  }
+
 }
