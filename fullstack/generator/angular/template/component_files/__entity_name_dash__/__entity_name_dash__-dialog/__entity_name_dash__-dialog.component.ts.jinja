@@ -44,9 +44,9 @@ export class {{entity.name}}DialogComponent {
       {%for prop in entity.properties %}
       {% if prop.cardinality %}
       {% if prop.cardinality == '@*..*' or prop.cardinality == '@1..*' %}
-      {{ prop.name }}Ids: [[]],
+      {{ prop.name }}: [[]],
       {% else %}
-      {{ prop.name }}Id: [''],
+      {{ prop.name }}: [''],
       {% endif %}
       {% else %}
       {{ prop.name }}: [''],
@@ -91,9 +91,10 @@ export class {{entity.name}}DialogComponent {
 
   onSubmit(): void {
     if (this.{{ entity.name | lower }}Form.valid) {
-      const formData = this.{{ entity.name | lower }}Form.value;
+      let formData = this.{{ entity.name | lower }}Form.value;
 
-      if (formData.id) {
+      if (this.data?.id) {
+        formData = {...formData, id: this.data?.id}
         this.{{entity.name|lower}}Service.update{{entity.name}}(formData).subscribe((updated{{entity.name}}) => {
           this.dialogRef.close(updated{{entity.name}});
         });
