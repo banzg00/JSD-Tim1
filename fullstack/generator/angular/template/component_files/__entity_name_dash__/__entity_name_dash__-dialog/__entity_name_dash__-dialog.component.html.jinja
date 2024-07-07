@@ -1,4 +1,4 @@
-<h1 mat-dialog-title class="mx-auto">{{ '{{ data.id ? \'Update\' : \'Create\' }} ' + entity.name }}</h1>
+<h1 mat-dialog-title class="mx-auto">{{ '{{ data?.id ? \'Update\' : \'Create\' }} ' + entity.name }}</h1>
 <div mat-dialog-content class="w-[35vw]">
   <form [formGroup]="{{ entity.name |  lower }}Form" class="w-full flex flex-col gap-y-1 items-center">
     {%for prop in entity.properties %}
@@ -6,20 +6,20 @@
       <mat-label>{{ prop.name | capitalize_str }}</mat-label>
     {% if prop.cardinality%}
     {% if prop.cardinality == '@*..*' or prop.cardinality == '@1..*' %}
-      <mat-select formControlName="{{ prop.name }}Ids" required multiple>
-        <mat-option *ngFor="let {{ prop.name }} of {{ prop.name }}Options" [value]="{{ prop.name }}.id" class="w-full">
+      <mat-select formControlName="{{ prop.name }}" multiple>
+        <mat-option *ngFor="let {{ prop.name }} of {{ prop.name }}Options" [value]="{{ prop.name }}" class="w-full">
           {{ prop.type | format_type + " {{ "+ prop.name +"?.id }}"}}
         </mat-option>
       </mat-select>
     {% else %}
-      <mat-select formControlName="{{ prop.name }}Id" required>
-        <mat-option *ngFor="let {{ prop.name }} of {{ prop.name }}Options" [value]="{{ prop.name }}.id" class="w-full">
+      <mat-select formControlName="{{ prop.name }}" >
+        <mat-option *ngFor="let {{ prop.name }} of {{ prop.name }}Options" [value]="{{ prop.name }}" class="w-full">
           {{ prop.type | format_type + " {{ "+ prop.name +"?.id }}"}}
         </mat-option>
       </mat-select>
     {% endif %}
     {% else %}
-      <input matInput formControlName="{{ prop.name }}" required class="w-full">
+      <input matInput formControlName="{{ prop.name }}" class="w-full">
     {% endif %}
     </mat-form-field>
     {% endfor %}
@@ -29,6 +29,6 @@
 <div mat-dialog-actions class="flex w-full !justify-center !gap-x-4">
   <button mat-button class="w-[10vw]" (click)="onCancel()">Cancel</button>
   <button mat-button class="w-[10vw]" (click)="onSubmit()" [disabled]="{{ entity.name |  lower }}Form.invalid">
-    {{ '{{ data.id ? \'Update\' : \'Create\' }}' }}
+    {{ '{{ data?.id ? \'Update\' : \'Create\' }}' }}
   </button>
 </div>

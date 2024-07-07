@@ -21,12 +21,19 @@ public class {{ entity.name }}DTO {
 
     private Long id;
 {% for property in entity.properties %}
-    {% if not property.cardinality %}
-         {% if(property.type | format_type) == "LocalDate" %}
+    {% if property.cardinality %}
+        {% if property.cardinality == '@*..*' or property.cardinality == '@1..*' %}
+    private List<{{ property.type | format_type}}DTO> {{ property.name }};
+        {% else %}
+    private {{ property.type.name }}DTO {{ property.name }};
+        {% endif %}
+    {% else %}
+        {% if(property.type | format_type) == "LocalDate" %}
     @JsonFormat(pattern = "yyyy-MM-dd")
         {% elif (property.type | format_type) == "LocalDateTime" %}
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
         {% endif %}
+
         {% if property.isList %}
     private List<{{ property.type | format_type}}> {{ property.name }};
         {% else %}

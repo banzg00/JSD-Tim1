@@ -6,16 +6,13 @@ project {
 }
 
 entity User {
-    customUsername: str
     email: str
     password: str
-    firstName: str
-    lastName: str
     fullName: str
 }
 
 entity Person {
-    name : str[]
+    name : str
     address: Address @1..1
     age: int
     houses: House @1..*
@@ -25,12 +22,10 @@ entity Address {
     street : str
     city : str
     country : str
-    owner: Person @1..1
 }
 
 entity House {
     floor: int
-    homeOwner: Person @*..1
     createdAt: date
 }
 
