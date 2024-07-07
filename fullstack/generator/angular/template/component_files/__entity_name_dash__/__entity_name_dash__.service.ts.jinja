@@ -23,6 +23,7 @@ export class {{entity.name}}Service {
   }
 
   create{{entity.name}}({{entity.name | lower}}: {{entity.name}}) {
+
     return this.http.post<{{entity.name}}>(`${this.routePrefix}/create`, {{entity.name | lower}}, this.httpOptions);
   }
 
@@ -32,5 +33,6 @@ export class {{entity.name}}Service {
 
   delete{{entity.name}}(id: string) {
     return this.http.delete<void>(`${this.routePrefix}/delete/${id}`);
+
   }
 }

@@ -1,10 +1,12 @@
 <div class="flex w-full h-full justify-center bg-gray-200">
   <div
+
     class="relative mt-[10%] p-10 gap-y-8 h-fit w-[45vw] flex-col flex items-left rounded-xl bg-gray-300"
   >
     <div class="absolute top-4 flex w-full items-center justify-between">
       <a class="underline" href="/">< Back</a>
       <button class="mr-16" (click)="addNew()">Add new {{ entity.name }}</button>
+
     </div>
     <div class="mx-auto font-semibold text-3xl mt-4">{{ entity.name }}</div>
     <table class="bg-gray-200 rounded-xl">
@@ -26,12 +28,16 @@
                 <div class="flex gap-x-2">
                 <a 
                 class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+
                 [routerLink]="'/{{ prop.type | format_type | lower}}/' + {{ 'listItem?.id' }}" *ngFor="let listItem of {{ entity.name | lower + '?.' + prop.name }}">{{ '{{ listItem?.id }}' }}</a>
+
                 </div>
                 {% else %}
                 <a 
                 class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+
                 [routerLink]="'/{{ prop.type | format_type | lower}}/' + {{entity.name | lower + '?.' + prop.name + '?.id' }}">{{'{{ '+ entity.name | lower + '?.' + prop.name + '?.id }}' }}</a>
+
                 {% endif %}
             {% endif %}
             </td>
