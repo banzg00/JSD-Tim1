@@ -8,6 +8,7 @@ venv/
 # Generated projects
 generated_springboot/
 generated_angular/
+generated_react/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

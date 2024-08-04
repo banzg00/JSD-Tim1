@@ -20,5 +20,9 @@ def get_pages_angular_folder_path(output_path, context):
     return os.path.join(output_path, 'src/app/pages')
 
 
+def get_pages_react_folder_path(output_path, context):
+    return os.path.join(output_path, 'src/pages')
+
+
 def format_template_name(path):
     return os.path.split(path)[-1]
