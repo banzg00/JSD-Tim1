@@ -1,0 +1,45 @@
+import axios from 'axios';
+
+const API_BASE_URL = 'http://localhost:8442/api';
+
+class {{entity.name}}Service = {
+  getAll{{entity.name}}() {
+    return axios.get(`${API_BASE_URL}/{{entity.name | lower}}/all`)
+      .then(response => response.data)
+      .catch(error => console.error('There was an error fetching the data!', error));
+  },
+
+  get{{entity.name}}ById(id) {
+    return axios.get(`${API_BASE_URL}/{{entity.name | lower}}/${id}`)
+      .then(response => response.data)
+      .catch(error => console.error(`There was an error fetching the {{entity.name}} with id ${id}!`, error));
+  },
+
+  create{{entity.name}}({{entity.name | lower}}) {
+    return axios.post(`${API_BASE_URL}/{{entity.name | lower}}/create`, {{entity.name | lower}}, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.data)
+    .catch(error => console.error('There was an error creating the data!', error));
+  },
+
+  update{{entity.name}}({{entity.name | lower}}) {
+    return axios.put(`${API_BASE_URL}/{{entity.name | lower}}/update/${{{entity.name | lower}}.id}`, {{entity.name | lower}}, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.data)
+    .catch(error => console.error('There was an error updating the data!', error));
+  },
+
+  delete{{entity.name}}(id) {
+    return axios.delete(`${API_BASE_URL}/{{entity.name | lower}}/delete/${id}`)
+      .then(response => response.data)
+      .catch(error => console.error(`There was an error deleting the {{entity.name}} with id ${id}!`, error));
+  }
+};
+
+export default {{entity.name}}Service;
