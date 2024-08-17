@@ -1,0 +1,33 @@
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+// import LoginComponent from './components/LoginComponent';
+// import SignupComponent from './components/SignupComponent';
+import PageNotFound from './components/PageNotFound/PageNotFound';
+// {% for entity in entities %}
+// import {{entity.name}}Component from './components/{{entity.name}}Component';
+// import {{entity.name}}ListComponent from './components/{{entity.name}}ListComponent';
+// {% endfor %}
+
+const AppRoutes: React.FC = () => {
+  return (
+    <Router>
+      <Routes>
+        {/* <Route exact path="/">
+          <Navigate to="/login" />
+        </Route>
+        <Route path="/login" element={LoginComponent} />
+        <Route path="/signup" element={SignupComponent} /> */}
+        {/* {% for entity in entities %}
+        <Route path="/{{entity.name | lower}}/:id" element={ {{entity.name}}Component } />
+        {% endfor %}
+        {% for entity in entities %}
+        <Route path="/list/{{entity.name | lower}}" element={ {{entity.name}}ListComponent } />
+        {% endfor %} */}
+        <Route path="/not-found" element={<PageNotFound />} />
+        <Route path="*" element={<Navigate to="/not-found" replace />} />
+      </Routes>
+    </Router>
+  );
+};
+
+export default AppRoutes;
