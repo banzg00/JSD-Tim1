@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-// import LoginComponent from './components/LoginComponent';
-// import SignupComponent from './components/SignupComponent';
 import PageNotFound from './components/PageNotFound/PageNotFound';
+import Login from './components/Login/Login';
+import SignUp from './components/SignUp/SignUp';
 // {% for entity in entities %}
 // import {{entity.name}}Component from './components/{{entity.name}}Component';
 // import {{entity.name}}ListComponent from './components/{{entity.name}}ListComponent';
@@ -12,11 +12,9 @@ const AppRoutes: React.FC = () => {
   return (
     <Router>
       <Routes>
-        {/* <Route exact path="/">
-          <Navigate to="/login" />
-        </Route>
-        <Route path="/login" element={LoginComponent} />
-        <Route path="/signup" element={SignupComponent} /> */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} /> 
         {/* {% for entity in entities %}
         <Route path="/{{entity.name | lower}}/:id" element={ {{entity.name}}Component } />
         {% endfor %}

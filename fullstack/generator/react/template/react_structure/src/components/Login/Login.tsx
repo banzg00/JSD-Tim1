@@ -1,26 +1,27 @@
-import React, { useState } from 'react';
-import AuthService from '../../services/AuthService';
+import React, { useState } from "react";
+import AuthService from "../../services/AuthService";
+import { Link } from "react-router-dom";
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
     try {
       const data = await AuthService.login({ email: username, password });
-      localStorage.setItem('User-token', data.accessToken);
-      localStorage.setItem('Expires-in', data.expiresIn);
-      localStorage.setItem('Refresh-token', data.refreshToken);
-      localStorage.setItem('Username', data.username);
-      localStorage.setItem('User-role', data.role);
+      localStorage.setItem("User-token", data.accessToken);
+      localStorage.setItem("Expires-in", data.expiresIn);
+      localStorage.setItem("Refresh-token", data.refreshToken);
+      localStorage.setItem("Username", data.username);
+      localStorage.setItem("User-role", data.role);
 
-      setUsername('');
-      setPassword('');
-      window.location.href = '/';
-    } catch (error) {
+      setUsername("");
+      setPassword("");
+      window.location.href = "/";
+    } catch (error: any) {
       if (error.response?.status === 401) {
-        alert('Wrong username or password');
+        alert("Wrong username or password");
       } else {
         alert("Error! Can't login now. Try again later.");
       }
@@ -58,11 +59,13 @@ const Login = () => {
             required
           />
         </div>
-        <button type="submit" className="w-full">Login</button>
-
-        <a href="/signup" className="underline text-sm mx-auto w-fit">
+        <button type="submit" className="w-full">
+          Login
+        </button>
+        <Link to={"/signup"} className="underline text-sm mx-auto w-fit">
+          {" "}
           Don't have an account? Signup here
-        </a>
+        </Link>
       </form>
     </div>
   );

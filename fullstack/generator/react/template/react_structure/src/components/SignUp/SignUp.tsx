@@ -1,22 +1,23 @@
-import React, { useState } from 'react';
-import AuthService from '../../services/AuthService';
+import React, { useState } from "react";
+import AuthService from "../../services/AuthService";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
     try {
       await AuthService.register({ fullName, email, password });
-      alert('You have registered successfully!');
-      window.location.href = '/'; 
+      alert("You have registered successfully!");
+      window.location.href = "/";
     } catch (error) {
-      alert('Unable to register! Try again!');
-      setFullName('');
-      setEmail('');
-      setPassword('');
+      alert("Unable to register! Try again!");
+      setFullName("");
+      setEmail("");
+      setPassword("");
     }
   };
 
@@ -63,10 +64,12 @@ const SignUp = () => {
             required
           />
         </div>
-        <button type="submit" className="w-full">Sign Up</button>
-        <a href="/login" className="underline text-sm mx-auto w-fit">
+        <button type="submit" className="w-full">
+          Sign Up
+        </button>
+        <Link to={"/login"} className="underline text-sm mx-auto w-fit">
           Already a member? Login here
-        </a>
+        </Link>
       </form>
     </div>
   );
