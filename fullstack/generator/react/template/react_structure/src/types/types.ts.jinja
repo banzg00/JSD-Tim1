@@ -1,0 +1,8 @@
+{% for entity in entities%}
+export interface {{ entity.name | capitalize_str + ' {'}}
+  id: number;
+{% for prop in entity.properties %}  {{ prop.name }}: {% if prop.cardinality == '@*..*' or prop.cardinality == '@1..*' %}{{ prop.type | format_type + "[]" }}{% else %}{{ prop.type | format_type }}{% endif %};
+{% endfor %}
+{{ "}" }}
+
+{% endfor %}
