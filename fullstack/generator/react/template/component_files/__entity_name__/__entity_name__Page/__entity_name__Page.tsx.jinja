@@ -1,0 +1,74 @@
+import React, { useEffect, useState } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
+import { Dialog } from '@material-ui/core';
+import ConfirmationDialog from '../../../components/confirmation-dialog/ConfirmationDialog';
+import {{entity.name}}Dialog from '../{{ entity.name | lower }}-dialog/{{ entity.name | lower }}-dialog.component';
+import { {{entity.name}}Service } from '../{{entity.name | lower}}Service';
+
+interface {{entity.name}}Props {
+  id: string;
+  {{entity.name | lower }}: {{entity.name}} | null;
+}
+
+const {{entity.name}}Component: React.FC = () => {
+  const [{{entity.name | lower}}, set{{entity.name}}] = useState<{{entity.name}} | null>(null);
+  const { id } = useParams<{ id: string }>();
+  const history = useHistory();
+
+  useEffect(() => {
+    if (id) {
+      {{entity.name}}Service.get{{entity.name}}ById(id).then((data) => {
+        set{{entity.name}}(data);
+      });
+    }
+  }, [id]);
+
+  const openDeleteConfirmationDialog = () => {
+    throw new Error('Function not implemented.');
+  };
+
+  const openEditDialog = () => {
+    throw new Error('Function not implemented.');
+  };
+
+  const deleteEntity = () => {
+    throw new Error('Function not implemented.');
+  };
+
+  return (
+    <div className="flex w-full h-full justify-center bg-gray-200">
+      <div className="relative mt-[10%] p-10 gap-y-8 h-fit w-[35vw] flex-col flex items-left rounded-xl bg-gray-300">
+        <div className="absolute top-4 flex w-full items-center justify-between">
+          <Link className="underline" to="/">&lt; Back</Link>
+          <div className="flex gap-x-2 mr-14">
+            <button className="w-[5vw]" onClick={openEditDialog}>Edit</button>
+            <button className="w-[5vw]" onClick={openDeleteConfirmationDialog}>Delete</button>
+          </div>
+        </div>
+        <div className="mx-auto font-semibold text-3xl mt-4">{{ entity.name }}</div>
+        {entity.properties.map((prop) => (
+          <div key={prop.name} className="flex items-center gap-x-4 border-b border-gray-400">
+            <div className="w-[5vw]">{prop.name.charAt(0).toUpperCase() + prop.name.slice(1)}:</div>
+            {!prop.cardinality ? (
+              <div>{ {{entity.name | lower}}?.[prop.name] ?? 'N/A' }</div>
+            ) : (
+              prop.cardinality === '@*..*' || prop.cardinality === '@1..*' ? (
+                {{entity.name | lower}}?.[prop.name]?.map((listItem) => (
+                  <div key={listItem.id}>
+                    <Link to={`/${prop.type.toLowerCase()}/${listItem.id}`}>{listItem.id}</Link>
+                  </div>
+                ))
+              ) : (
+                <div>
+                  <Link to={`/${prop.type.toLowerCase()}/${ {{entity.name | lower}}?.[prop.name]?.id }`}>{ {{entity.name | lower}}?.[prop.name]?.id ?? 'N/A' }</Link>
+                </div>
+              )
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default {{entity.name}}Component;

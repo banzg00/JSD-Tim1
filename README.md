@@ -2,7 +2,7 @@
 
 ## Fullstack (.fs)
 
-<b>Fullstack</b> is a domain-specific language (DSL)  for generating SpringBoot and Angular projects with CRUD operations of given entity models and REST paths. 
+<b>Fullstack</b> is a domain-specific language (DSL)  for generating SpringBoot, Angular and React projects with CRUD operations of given entity models and REST paths. 
 
 The file extension for your model must be .fs.
 
@@ -24,6 +24,18 @@ Model must be written using described grammar rules.
 - *If you define a User entity with email, password and fullName, you will get login and register as well
 
 ### Angular Features
+- Standardized project layout
+- For each entity
+  - Component
+    - Page preview of an entity
+    - Table preview of attributes
+    - New & Update entity forms
+    - Delete option
+  - Service 
+    - CRUD operations
+- *If you define a User entity with email, password and fullName, you will get login and register as well
+
+### React Features
 - Standardized project layout
 - For each entity
   - Component
@@ -163,15 +175,21 @@ To generate Angular application use following command:
 textx generate [PATH TO .fs FILE] --target angular -o [PATH TO OUTPUT FOLDER] --overwrite
 ```
 
+To generate React application use following command:
+```
+textx generate [PATH TO .fs FILE] --target react -o [PATH TO OUTPUT FOLDER] --overwrite
+```
+
 Main difference between previous two commands is `--target` parameter, which can take values
-<i>springboot</i> or <i>angular</i> whether you're generating frontend or backend application.
+<i>springboot</i> or <i>angular</i> or <i>react</i> whether you're generating frontend or backend application.
 
 Example usage:
 
 <code>textx generate example/userExample.fs --target springboot -o example/example_output --overwrite</code>
 <br>
 <code>textx generate example/userExample.fs --target angular -o example/example_output --overwrite</code>
-
+<br>
+<code>textx generate example/userExample.fs --target react -o example/example_output --overwrite</code>
 
 
 # Credits
