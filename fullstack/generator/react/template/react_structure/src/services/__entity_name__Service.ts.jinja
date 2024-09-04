@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { {{entity.name}} } from '../types/types';
 
 const API_BASE_URL = 'http://localhost:8442/api';
 
@@ -9,13 +10,13 @@ class {{entity.name}}Service {
       .catch(error => console.error('There was an error fetching the data!', error));
   }
 
-  get{{entity.name}}ById(id) {
+  get{{entity.name}}ById(id: number) {
     return axios.get(API_BASE_URL + `/{{entity.name | lower}}/${id}`)
       .then(response => response.data)
       .catch(error => console.error(`There was an error fetching the {{entity.name}} with id ${id}!`, error));
   }
 
-  create{{entity.name}}({{entity.name | lower}}) {
+  create{{entity.name}}({{entity.name | lower}}: {{entity.name}}) {
     return axios.post(API_BASE_URL + `/{{entity.name | lower}}/create`, {{entity.name | lower}}, {
       headers: {
         'Content-Type': 'application/json'
@@ -25,7 +26,7 @@ class {{entity.name}}Service {
     .catch(error => console.error('There was an error creating the data!', error));
   }
 
-  update{{entity.name}}({{entity.name | lower}}) {
+  update{{entity.name}}({{entity.name | lower}}: {{entity.name}}) {
     return axios.put(API_BASE_URL + `{{entity.name | lower}}/update/{{ "${" +entity.name | lower + ".id}" }}`, {{entity.name | lower}}, {
       headers: {
         'Content-Type': 'application/json'
@@ -35,7 +36,7 @@ class {{entity.name}}Service {
     .catch(error => console.error('There was an error updating the data!', error));
   }
 
-  delete{{entity.name}}(id) {
+  delete{{entity.name}}(id: number) {
     return axios.delete(API_BASE_URL + `/{{entity.name | lower}}/delete/${id}`)
       .then(response => response.data)
       .catch(error => console.error(`There was an error deleting the {{entity.name}} with id ${id}!`, error));
