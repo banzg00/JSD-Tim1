@@ -1,0 +1,69 @@
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import { Dialog } from "@material-ui/core"; 
+import {{entity.name}}Service from "../../services/{{entity.name|lower}}Service";
+import { {{entity.name}} } from "../../types/types";
+
+const {{entity.name}}List: React.FC = () => {
+  const [{{entity.name | lower}}List, set{{entity.name}}List] = useState<{{entity.name}}[]>([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    {{entity.name}}Service.getAll{{entity.name}}().then(response => {
+      set{{entity.name}}List(response);
+    });
+  }, []);
+
+  const addNew = () => {
+    // Implementacija dijaloga
+  };
+
+  return (
+    <div className="flex w-full h-full justify-center bg-gray-200">
+      <div className="relative mt-[10%] p-10 gap-y-8 h-fit w-[45vw] flex-col flex items-left rounded-xl bg-gray-300">
+        <div className="absolute top-4 flex w-full items-center justify-between">
+          <Link className="underline" to="/">Back</Link>
+          <button className="mr-16" (click)="addNew()">Add new {{ entity.name }}</button>
+        </div>
+        <div className="mx-auto font-semibold text-3xl mt-4">{{ entity.name }}</div>
+        <table className="bg-gray-200 rounded-xl">
+          <thead>
+            <tr>
+              {% for prop in entity.properties %}
+                <th key="{{ prop.name }}" className="text-left pl-2">{{ prop.name | capitalize_str }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {{ "{" }}{{ entity.name | lower }}List.map(({{ entity.name | lower }})=>(
+            <tr key={{ "{" }}{{ entity.name | lower }}.id{{ "}" }} className="border-b border-b-gray-300">
+            {% for prop in entity.properties %}
+                <td key="{{ prop.name }}" className="text-left pl-2 pt-2">
+                  {% if not prop.cardinality %}
+                    {{'{' + entity.name | lower + '.' + prop.name + ' }' }}
+                  {% else %}
+                  {% if prop.cardinality == '@*..*' or prop.cardinality == '@1..*' %}
+                    <div class="flex gap-x-2">
+                      <a className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+                        [routerLink]="'/{{ prop.type | format_type | lower}}/' + {{ 'listItem?.id' }}" *ngFor="let listItem of {{ entity.name | lower + '?.' + prop.name }}">{{ '{{ listItem?.id }}' }}
+                      </a>
+                    </div>
+                  {% else %}
+                    <a className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+                      [routerLink]="'/{{ prop.type | format_type | lower}}/' + {{entity.name | lower + '?.' + prop.name + '?.id' }}">{{'{{ '+ entity.name | lower + '?.' + prop.name + '?.id }}' }}
+                    </a>
+                  {% endif %}
+                  {% endif %}
+                </td>
+            {% endfor %}
+            </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div> 
+  );
+};
+
+export default {{entity.name}}List;
