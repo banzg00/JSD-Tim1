@@ -3,10 +3,11 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import PageNotFound from './components/PageNotFound/PageNotFound';
 import Login from './components/Login/Login';
 import SignUp from './components/SignUp/SignUp';
-// {% for entity in entities %}
-// import {{entity.name}}Component from './components/{{entity.name}}Component';
-// import {{entity.name}}ListComponent from './components/{{entity.name}}ListComponent';
-// {% endfor %}
+
+{% for entity in entities %}
+import {{entity.name}}Page from './components/{{entity.name}}/{{entity.name}}Page/{{entity.name}}Page';
+import {{entity.name}}List from './components/{{entity.name}}/{{entity.name}}List/{{entity.name}}List';
+{% endfor %}
 
 const AppRoutes: React.FC = () => {
   return (
@@ -15,12 +16,12 @@ const AppRoutes: React.FC = () => {
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} /> 
-        {/* {% for entity in entities %}
-        <Route path="/{{entity.name | lower}}/:id" element={ {{entity.name}}Component } />
-        {% endfor %}
+
         {% for entity in entities %}
-        <Route path="/list/{{entity.name | lower}}" element={ {{entity.name}}ListComponent } />
-        {% endfor %} */}
+        <Route path="/{{entity.name | lower}}/:id" element={<{{entity.name}}Page />} />
+        <Route path="/list/{{entity.name | lower}}" element={<{{entity.name}}List />} />
+        {% endfor %}
+
         <Route path="/not-found" element={<PageNotFound />} />
         <Route path="*" element={<Navigate to="/not-found" replace />} />
       </Routes>

@@ -19,7 +19,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ open, onClose }
     <Dialog open={open} onClose={() => onClose(false)}>
       <div className="flex flex-col gap-y-4 px-10 py-4 rounded-xl">
         <DialogTitle>Are you sure you want to delete this?</DialogTitle>
-        <DialogActions className="flex gap-x-4 items-center" align="center">
+        <DialogActions className="flex gap-x-4 items-center">
           <Button onClick={handleCancel} variant="outlined" color="primary" className="w-[8vw]">Cancel</Button>
           <Button onClick={handleConfirm} variant="contained" color="secondary" className="w-[8vw]">Delete</Button>
         </DialogActions>

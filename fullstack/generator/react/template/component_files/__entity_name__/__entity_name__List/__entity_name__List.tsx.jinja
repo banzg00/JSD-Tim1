@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Dialog, Button } from "@material-ui/core"; 
+import { useNavigate, Link } from "react-router-dom";
+import { Dialog, Button } from "@mui/material"; 
 import {{entity.name}}Dialog from "../{{entity.name}}Dialog/{{entity.name}}Dialog";
 import {{entity.name}}Service from "../../../services/{{entity.name}}Service";
 import { {{entity.name}} } from "../../../types/types";
@@ -46,18 +46,25 @@ const {{entity.name}}List: React.FC = () => {
             {% for prop in entity.properties %}
                 <td key="{{ prop.name }}" className="text-left pl-2 pt-2">
                   {% if not prop.cardinality %}
-                    {{'{' + entity.name | lower + '.' + prop.name + ' }' }}
+                    {{'{ ' + entity.name | lower + '?.' + prop.name + .toString() + ' ?? \'N/A\' }' }}
                   {% else %}
                   {% if prop.cardinality == '@*..*' or prop.cardinality == '@1..*' %}
-                    <div class="flex gap-x-2">
-                      <a className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
-                        [routerLink]="'/{{ prop.type | format_type | lower}}/' + {{ 'listItem?.id' }}" *ngFor="let listItem of {{ entity.name | lower + '?.' + prop.name }}">{{ '{{ listItem?.id }}' }}
-                      </a>
+                    <div className="flex gap-x-2">
+                      { {{entity.name | lower + '.' + prop.name}}?.map((listItem) => (
+                      <Link className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+                        to={ `/{{ prop.type | format_type | lower }}/${listItem?.id}` }
+                        key={listItem?.id}
+                      >
+                        {listItem?.id}
+                      </Link>
+                      ))}
                     </div>
-                  {% else %}
-                    <a className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
-                      [routerLink]="'/{{ prop.type | format_type | lower}}/' + {{entity.name | lower + '?.' + prop.name + '?.id' }}">{{'{{ '+ entity.name | lower + '?.' + prop.name + '?.id }}' }}
-                    </a>
+                  {% else %}                   
+                    <Link className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+                      to={ `/{{ prop.type | format_type | lower }}/${ {{ entity.name | lower }}?.{{ prop.name }}?.id}` }
+                    >
+                      { {{ entity.name | lower + '?.' + prop.name + '?.id' }} }
+                    </Link>
                   {% endif %}
                   {% endif %}
                 </td>
@@ -68,8 +75,8 @@ const {{entity.name}}List: React.FC = () => {
         </table>
       </div>
 
-      <Dialog open={isDialogOpen} onClose={handleDialogClose}>
-        <{{ entity.name }}Dialog onClose={handleDialogClose} />
+      <Dialog open={isDialogOpen} onClose={handleDialogClose} maxWidth="sm" fullWidth>
+        <{{ entity.name }}Dialog data={{ "{{" }}id: undefined{{ "}}" }} onClose={handleDialogClose} />
       </Dialog>
     </div> 
   );

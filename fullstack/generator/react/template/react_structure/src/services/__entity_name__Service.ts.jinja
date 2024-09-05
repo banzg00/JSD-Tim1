@@ -27,7 +27,7 @@ class {{entity.name}}Service {
   }
 
   update{{entity.name}}({{entity.name | lower}}: {{entity.name}}) {
-    return axios.put(API_BASE_URL + `{{entity.name | lower}}/update/{{ "${" +entity.name | lower + ".id}" }}`, {{entity.name | lower}}, {
+    return axios.put(API_BASE_URL + `/{{entity.name | lower}}/update/{{ "${" +entity.name | lower + ".id}" }}`, {{entity.name | lower}}, {
       headers: {
         'Content-Type': 'application/json'
       }
