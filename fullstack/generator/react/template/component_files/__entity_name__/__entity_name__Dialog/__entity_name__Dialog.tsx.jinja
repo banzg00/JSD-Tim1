@@ -44,6 +44,15 @@ export default function {{entity.name}}Dialog({ data, onClose }: {{entity.name}}
   };
 
   const onSubmit = (formData: {{entity.name}}) => {
+    {% for prop in entity.properties %}
+      {% if prop.cardinality %}
+        {% if prop.cardinality == '@*..*' or prop.cardinality == '@1..*' %}
+    formData.{{prop.name}} = find{{prop.name | capitalize}}ByIds(formData.{{prop.name}} as unknown as number[])
+        {% else %}
+    formData.{{prop.name}} = find{{prop.name | capitalize}}ById(formData.{{prop.name}} as unknown as number)
+        {% endif %}
+      {% endif %}
+    {% endfor %}
     if (data?.id) {
       {{entity.name}}Service.update{{entity.name}}({ ...formData, id: data.id }).then((updatedEntity: {{entity.name}}) => {
         onClose(updatedEntity);
@@ -54,6 +63,20 @@ export default function {{entity.name}}Dialog({ data, onClose }: {{entity.name}}
       });
     }
   };
+
+  {% for prop in entity.properties %}
+    {% if prop.cardinality %}
+      {% if prop.cardinality == '@*..*' or prop.cardinality == '@1..*' %}
+  const find{{prop.name | capitalize}}ByIds = (ids: number[]) => {
+    return {{ prop.name }}Options.filter(item => ids.includes(item.id));
+  }
+      {% else %}
+  const find{{prop.name | capitalize}}ById = (id: number) => {
+    return {{ prop.name }}Options.find(x => x.id === id)!
+  }
+      {% endif %}
+    {% endif %}
+  {% endfor %}
 
   return (
     <>

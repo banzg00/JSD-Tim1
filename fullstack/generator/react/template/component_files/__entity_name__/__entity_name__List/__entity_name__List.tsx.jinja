@@ -46,7 +46,7 @@ const {{entity.name}}List: React.FC = () => {
             {% for prop in entity.properties %}
                 <td key="{{ prop.name }}" className="text-left pl-2 pt-2">
                   {% if not prop.cardinality %}
-                    {{'{ ' + entity.name | lower + '?.' + prop.name + .toString() + ' ?? \'N/A\' }' }}
+                    {{'{ ' + entity.name | lower + '?.' + prop.name + '.toString()' + ' ?? \'N/A\' }' }}
                   {% else %}
                   {% if prop.cardinality == '@*..*' or prop.cardinality == '@1..*' %}
                     <div className="flex gap-x-2">
