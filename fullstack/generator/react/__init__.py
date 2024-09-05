@@ -23,7 +23,7 @@ def fullstack_generate_react(metamodel, model, output_path, overwrite, debug, **
     filters = get_filters()
 
     # structure generator
-    output_path = generate_react_structure(context, filters, output_path, overwrite)    
+    output_path = generate_react_structure(context, filters, model, output_path, overwrite)    
 
     # entity content generator
     generate_entity_components(context, filters, model, output_path, overwrite)
@@ -37,15 +37,21 @@ def generate_entity_components(context, filters, model, output_path, overwrite):
         context['entity'] = entity
         context['entity_name_dash'] = dash_case(entity.name)
         context['entity_name'] = entity.name
+        context['entity_name_lower'] = lower_first_str(entity.name)
 
         # Run Jinja generator
         textx_jinja_generator(component_files_template, pages_folder, context, overwrite, filters=filters)
 
 
-def generate_react_structure(context, filters, output_path, overwrite):
+def generate_react_structure(context, filters, model, output_path, overwrite):
     react_structure_template = os.path.join(THIS_FOLDER, 'template/react_structure')
     output_path = create_output_file(output_path, 'generated_react')
-    textx_jinja_generator(react_structure_template, output_path, context, overwrite, filters=filters)
+    for entity in model.entities:
+        context['properties'] = entity.properties
+        context['entity'] = entity
+        context['entity_name'] = entity.name
+
+        textx_jinja_generator(react_structure_template, output_path, context, overwrite, filters=filters)
     return output_path
 
 

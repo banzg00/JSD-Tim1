@@ -1,0 +1,170 @@
+import React, { useEffect, useState } from 'react';
+import { Button, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { useForm, Controller } from 'react-hook-form';
+import {{entity.name}}Service from '../../../services/{{entity.name}}Service';
+import { {{entity.name}} } from '../../../types/types';
+{% for prop in entity.properties %}
+{% if prop.cardinality %}
+import { {{ prop.type | format_type }} } from '../../../types/types';
+import {{ prop.type | format_type }}Service from '../../../services/{{ prop.type | format_type }}Service';
+{% endif %}
+{% endfor %}
+
+interface {{entity.name}}DialogProps {
+  data: { id?: number };
+  onClose: (entity?: any) => void;
+}
+
+export default function {{entity.name}}Dialog({ data, onClose }: {{entity.name}}DialogProps) {
+  const { control, handleSubmit, setValue, formState: { errors } } = useForm<{{entity.name}}>();
+
+  {% for prop in entity.properties %}
+    {% if prop.cardinality %}
+  let [{{ prop.name }}Options, set{{ prop.name | capitalize }}Options] = useState<{{ prop.type | format_type }}[]>([]);
+    {% endif %}
+  {% endfor %}
+
+  useEffect(() => {
+    if (data?.id) {
+      {{entity.name}}Service.get{{entity.name}}ById(data.id).then(({{ entity.name |  lower }}: {{entity.name}}) => {
+        {% for prop in entity.properties %}
+        setValue("{{prop.name}}", {{ entity.name |  lower }}.{{prop.name}});
+        {% endfor %}
+      });
+    }
+    {% for prop in entity.properties %}
+    {% if prop.cardinality %}
+    {{ prop.type | format_type }}Service.getAll{{ prop.type | format_type }}().then( ({{ prop.name }}: {{ prop.type | format_type }}[]) => set{{ prop.name | capitalize }}Options({{ prop.name }}));
+    {% endif %}
+    {% endfor %}
+  }, [data, setValue]);
+
+  const onCancel = () => {
+    onClose();
+  };
+
+  const onSubmit = (formData: {{entity.name}}) => {
+    {% for prop in entity.properties %}
+      {% if prop.cardinality %}
+        {% if prop.cardinality == '@*..*' or prop.cardinality == '@1..*' %}
+    formData.{{prop.name}} = find{{prop.name | capitalize}}ByIds(formData.{{prop.name}} as unknown as number[])
+        {% else %}
+    formData.{{prop.name}} = find{{prop.name | capitalize}}ById(formData.{{prop.name}} as unknown as number)
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+    if (data?.id) {
+      {{entity.name}}Service.update{{entity.name}}({ ...formData, id: data.id }).then((updatedEntity: {{entity.name}}) => {
+        onClose(updatedEntity);
+      });
+    } else {
+      {{entity.name}}Service.create{{entity.name}}(formData).then((newEntity: {{entity.name}}) => {
+        onClose(newEntity);
+      });
+    }
+  };
+
+  {% for prop in entity.properties %}
+    {% if prop.cardinality %}
+      {% if prop.cardinality == '@*..*' or prop.cardinality == '@1..*' %}
+  const find{{prop.name | capitalize}}ByIds = (ids: number[]) => {
+    return {{ prop.name }}Options.filter(item => ids.includes(item.id));
+  }
+      {% else %}
+  const find{{prop.name | capitalize}}ById = (id: number) => {
+    return {{ prop.name }}Options.find(x => x.id === id)!
+  }
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+
+  return (
+    <>
+      <DialogTitle className="mx-auto">{data?.id ? 'Update' : 'Create'} {{entity.name}} </DialogTitle>
+      <DialogContent className="w-[35vw]">
+        <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col gap-y-1 items-center">
+          {% for prop in entity.properties %}
+            {% if prop.cardinality%}
+            {% if prop.cardinality == '@*..*' or prop.cardinality == '@1..*' %}
+            <Controller
+            name="{{prop.name | lower}}"
+            control={control}
+            render={({ field }) => (
+              <FormControl fullWidth variant="outlined">
+                <InputLabel id="{{prop.name | lower}}-select-label">{{prop.name}}</InputLabel>
+                <Select
+                  {...field}
+                  labelId="{{prop.name | lower}}-select-label"
+                  label="{{prop.name}}"
+                  multiple
+                  value={field.value || []}
+                >
+                  { {{prop.name}}Options.map(({{prop.name}}) => (
+                    <MenuItem key={ {{prop.name}}.id } value={ {{prop.name}}.id }>
+                      {{prop.name}} {{ "{" }}{{prop.name}}.id}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
+            />
+            {% else %}
+            <Controller
+            name="{{prop.name}}"
+            control={control}
+            render={({ field }) => (
+              <FormControl fullWidth variant="outlined">
+                <InputLabel id="{{prop.name}}-select-label">{{prop.name}}</InputLabel>
+                <Select
+                  {...field}
+                  labelId="{{prop.name}}-select-label"
+                  label="{{prop.name | capitalize}}"
+                >
+                  { {{prop.name}}Options.map(({{prop.name}}) => (
+                    <MenuItem key={ {{prop.name}}.id } value={ {{prop.name}}.id }>
+                      {{prop.name}} { {{prop.name}}.id }
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
+            />
+            {% endif %}
+            {% else %}
+            <Controller
+            name="{{prop.name}}"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="{{prop.name | capitalize}}"
+                variant="filled"
+                fullWidth
+                error={!!errors.{{prop.name}}}
+                helperText={errors.{{prop.name}} ? '{{prop.name | capitalize}} is required' : ''}
+              />
+            )}
+            rules={{"{{"}} required: true {{"}}"}}
+            />
+            {% endif %}
+          {% endfor %}
+        </form>
+      </DialogContent>
+      <DialogActions className="flex w-full justify-center gap-x-4">
+        <Button variant="contained" color="primary" className="w-[10vw]" onClick={onCancel}>
+          Cancel
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          className="w-[10vw]"
+          type="submit"
+          onClick={handleSubmit(onSubmit)}
+          disabled={Object.keys(errors).length > 0}
+        >
+          {data?.id ? 'Update' : 'Create'}
+        </Button>
+      </DialogActions>
+    </>
+  );
+}
