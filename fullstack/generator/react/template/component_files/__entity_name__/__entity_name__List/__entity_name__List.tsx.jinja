@@ -1,30 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Link } from 'react-router-dom';
-import { Dialog } from "@material-ui/core"; 
-import {{entity.name}}Service from "../../services/{{entity.name|lower}}Service";
-import { {{entity.name}} } from "../../types/types";
+import { Dialog, Button } from "@material-ui/core"; 
+import {{entity.name}}Dialog from "../{{entity.name}}Dialog/{{entity.name}}Dialog";
+import {{entity.name}}Service from "../../../services/{{entity.name}}Service";
+import { {{entity.name}} } from "../../../types/types";
 
 const {{entity.name}}List: React.FC = () => {
   const [{{entity.name | lower}}List, set{{entity.name}}List] = useState<{{entity.name}}[]>([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    {{entity.name}}Service.getAll{{entity.name}}().then(response => {
+    {{entity.name}}Service.getAll{{entity.name}}().then((response) => {
       set{{entity.name}}List(response);
     });
   }, []);
 
-  const addNew = () => {
-    // Implementacija dijaloga
+  const handleAddNew = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
   };
 
   return (
     <div className="flex w-full h-full justify-center bg-gray-200">
       <div className="relative mt-[10%] p-10 gap-y-8 h-fit w-[45vw] flex-col flex items-left rounded-xl bg-gray-300">
         <div className="absolute top-4 flex w-full items-center justify-between">
-          <Link className="underline" to="/">Back</Link>
-          <button className="mr-16" (click)="addNew()">Add new {{ entity.name }}</button>
+          <a className="underline" href="#" onClick={() => navigate('/')}>&lt; Back</a>
+          <Button className="mr-16" variant="contained" onClick={handleAddNew}>Add new {{ entity.name }}</Button>
         </div>
         <div className="mx-auto font-semibold text-3xl mt-4">{{ entity.name }}</div>
         <table className="bg-gray-200 rounded-xl">
@@ -62,6 +67,10 @@ const {{entity.name}}List: React.FC = () => {
           </tbody>
         </table>
       </div>
+
+      <Dialog open={isDialogOpen} onClose={handleDialogClose}>
+        <{{ entity.name }}Dialog onClose={handleDialogClose} />
+      </Dialog>
     </div> 
   );
 };
