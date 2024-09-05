@@ -1,0 +1,94 @@
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Dialog } from "@material-ui/core";
+import ConfirmationDialog from "../../ConfirmationDialog/ConfirmationDialog";
+import {{entity.name}}Dialog from "../{{entity.name}}Dialog/{{entity.name}}Dialog";
+import {{entity.name}}Service from "../../../services/{{entity.name}}Service";
+import { {{entity.name}} } from "../../../types/types";
+
+const {{entity.name}}Component: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const [{{entity.name | lower}}, set{{entity.name}}] = useState<{{entity.name}} | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+
+  useEffect(() => {
+    if (id) {
+      {{entity.name}}Service.get{{entity.name}}ById(id).then((data) => {
+        set{{entity.name}}(data);
+      });
+    }
+  }, [id]);
+
+  const openEditDialog = () => {
+    setIsDialogOpen(true);
+  };
+
+  const closeEditDialog = () => {
+    setIsDialogOpen(false);
+  };
+
+  const openDeleteConfirmationDialog = () => {
+    setIsConfirmationOpen(true);
+  };
+
+  const closeDeleteConfirmationDialog = (result: boolean) => {
+    if (result) {
+      deleteEntity();
+    }
+    setIsConfirmationOpen(false);
+  };
+
+  const deleteEntity = () => {
+    if (id) {
+      {{entity.name}}Service.delete{{entity.name}}(Number(id)).then(() => {
+        navigate('/list/address');
+      });
+    }
+  };
+
+  return (
+    <div className="flex w-full h-full justify-center bg-gray-200">
+      <div className="relative mt-[10%] p-10 gap-y-8 h-fit w-[35vw] flex-col flex items-left rounded-xl bg-gray-300">
+        <div className="absolute top-4 flex w-full items-center justify-between">
+          <a className="underline" href="/">< Back</a>
+          <div className="flex gap-x-2 mr-14">
+            <button className="w-[5vw]" onClick={openEditDialog}>Edit</button>
+            <button className="w-[5vw]" onClick={openDeleteConfirmationDialog}>Delete</button>
+          </div>
+        </div>
+
+        <div className="mx-auto font-semibold text-3xl mt-4">{{ entity.name }}</div>
+        {% for prop in entity.properties %}
+          <div className="flex items-center gap-x-4 border-b border-gray-400">
+            <div className="w-[5vw]">{{prop.name | capitalize_str}}: </div>
+            {% if not prop.cardinality %}
+            <div>{{'{{ ' + entity.name | lower + '?.' + prop.name + ' ?? \'N/A\' }}' }}</div>
+            {% else %}
+                {% if prop.cardinality == '@*..*' or prop.cardinality == '@1..*' %}
+                {(entity?.[prop.name.toLowerCase()] ?? []).map((listItem: any) => (
+                  <div key={listItem?.id}>
+                    <a href={`/${prop.type.toLowerCase()}/${listItem?.id}`}>{listItem?.id}</a>
+                  </div>
+                ))}
+                {% else %}
+                <div>
+                    <a [routerLink]="'/{{ prop.type | format_type | lower}}/' + {{entity.name | lower + '?.' + prop.name + '?.id' }}">{{'{{ '+ entity.name | lower + '?.' + prop.name + '?.id ?? \'N/A\' }}' }}</a>
+                </div>
+                {% endif %}
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+      {isDialogOpen && (
+        <AddressDialog id={id} onClose={closeEditDialog} />
+      )}
+      {isConfirmationOpen && (
+        <ConfirmationDialog onClose={closeDeleteConfirmationDialog} />
+      )}
+    </div>
+  );
+};
+
+export default {{entity.name}}Component;

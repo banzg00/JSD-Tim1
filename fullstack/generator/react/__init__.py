@@ -37,6 +37,7 @@ def generate_entity_components(context, filters, model, output_path, overwrite):
         context['entity'] = entity
         context['entity_name_dash'] = dash_case(entity.name)
         context['entity_name'] = entity.name
+        context['entity_name_lower'] = lower_first_str(entity.name)
 
         # Run Jinja generator
         textx_jinja_generator(component_files_template, pages_folder, context, overwrite, filters=filters)
